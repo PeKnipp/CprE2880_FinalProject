@@ -118,8 +118,8 @@ def send_move():
         global moveDirection
         gui_send_message = "8\n"   # Update the message for the Client to send
 
-        turn_window = tk.Toplevel()
-        turn_window.title("Move Control")
+        move_window = tk.Toplevel()
+        move_window.title("Move Control")
 
         # Function to handle the move action
         def handle_move(direction):
@@ -134,7 +134,7 @@ def send_move():
                         messagebox.showerror("Input Error", "Please enter a valid number of degrees. (Between 0 and 91)")
 
         # Create a label for instructions
-        label = tk.Label(tmove_window, text="Enter centimeters to move:")
+        label = tk.Label(move_window, text="Enter centimeters to move:")
         label.pack(pady=10)
 
         # Create an entry for degrees input
@@ -142,10 +142,10 @@ def send_move():
         centimenters_entry.pack(pady=10)
 
         # Create buttons for left and right turns
-        left_button = tk.Button(move_window, text="Turn Left", command=lambda: handle_turn("Forward"))
+        left_button = tk.Button(move_window, text="Move Forward", command=lambda: handle_move("Forward"))
         left_button.pack(side=tk.LEFT, padx=20, pady=20)
 
-        right_button = tk.Button(move_window, text="Turn Right", command=lambda: handle_turn("Backward"))
+        right_button = tk.Button(move_window, text="Move Backward", command=lambda: handle_move("Backward"))
         right_button.pack(side=tk.RIGHT, padx=20, pady=20)
 
 def key_press(event):
