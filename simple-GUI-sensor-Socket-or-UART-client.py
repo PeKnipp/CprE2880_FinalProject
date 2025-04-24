@@ -43,6 +43,9 @@ def main():
         scan_command_Button = tk.Button(text ="Press to Turn", command = send_turn)
         scan_command_Button.pack() # Pack the button into the window for display
 
+        scan_command_Button = tk.Button(text ="Press to Move", command = send_move)
+        scan_command_Button.pack() # Pack the button into the window for display
+
         window.bind("<KeyPress>", key_press)
         window.bind("<KeyRelease>", key_release)
 
@@ -107,6 +110,42 @@ def send_turn():
         left_button.pack(side=tk.LEFT, padx=20, pady=20)
 
         right_button = tk.Button(turn_window, text="Turn Right", command=lambda: handle_turn("Right"))
+        right_button.pack(side=tk.RIGHT, padx=20, pady=20)
+
+def send_move():
+        global gui_send_message # Command that the GUI has requested sent to the Cybot
+        global moveAmount #in mm
+        global moveDirection
+        gui_send_message = "8\n"   # Update the message for the Client to send
+
+        turn_window = tk.Toplevel()
+        turn_window.title("Move Control")
+
+        # Function to handle the move action
+        def handle_move(direction):
+                centimenters = centimenters_entry.get()
+                if centimenters.isdigit() and int(centimenters) > 0:
+                        moveAmount = int(centimenters) * 10
+                        moveDirection = direction
+                        # Here you can add the logic to handle the turn
+                        
+                        move_window.destroy()  # Close the top window after action
+                else:
+                        messagebox.showerror("Input Error", "Please enter a valid number of degrees. (Between 0 and 91)")
+
+        # Create a label for instructions
+        label = tk.Label(tmove_window, text="Enter centimeters to move:")
+        label.pack(pady=10)
+
+        # Create an entry for degrees input
+        centimenters_entry = tk.Entry(move_window)
+        centimenters_entry.pack(pady=10)
+
+        # Create buttons for left and right turns
+        left_button = tk.Button(move_window, text="Turn Left", command=lambda: handle_turn("Forward"))
+        left_button.pack(side=tk.LEFT, padx=20, pady=20)
+
+        right_button = tk.Button(move_window, text="Turn Right", command=lambda: handle_turn("Backward"))
         right_button.pack(side=tk.RIGHT, padx=20, pady=20)
 
 def key_press(event):
