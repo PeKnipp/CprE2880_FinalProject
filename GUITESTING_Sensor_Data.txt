@@ -1,0 +1,275 @@
+M
+Angle: 0
+Distance: 35.759590
+
+Angle: 2
+Distance: 9.541624
+
+Angle: 4
+Distance: 178.429230
+
+Angle: 6
+Distance: 180.099762
+
+Angle: 8
+Distance: 179.569794
+
+Angle: 10
+Distance: 179.543991
+
+Angle: 12
+Distance: 179.095718
+
+Angle: 14
+Distance: 179.057022
+
+Angle: 16
+Distance: 178.985001
+
+Angle: 18
+Distance: 179.003265
+
+Angle: 20
+Distance: 136.032639
+
+Angle: 22
+Distance: 135.993942
+
+Angle: 24
+Distance: 135.992859
+
+Angle: 26
+Distance: 136.001465
+
+Angle: 28
+Distance: 135.480087
+
+Angle: 30
+Distance: 135.535995
+
+Angle: 32
+Distance: 135.504822
+
+Angle: 34
+Distance: 135.514496
+
+Angle: 36
+Distance: 135.835922
+
+Angle: 38
+Distance: 136.733536
+
+Angle: 40
+Distance: 178.823746
+
+Angle: 42
+Distance: 179.266647
+
+Angle: 44
+Distance: 10.085569
+
+Angle: 46
+Distance: 9.179352
+
+Angle: 48
+Distance: 8.239809
+
+Angle: 50
+Distance: 7.294892
+
+Angle: 52
+Distance: 7.299191
+
+Angle: 54
+Distance: 6.817595
+
+Angle: 56
+Distance: 6.771371
+
+Angle: 58
+Distance: 6.722996
+
+Angle: 60
+Distance: 6.720846
+
+Angle: 62
+Distance: 6.720846
+
+Angle: 64
+Distance: 6.654197
+
+Angle: 66
+Distance: 6.653122
+
+Angle: 68
+Distance: 6.652047
+
+Angle: 70
+Distance: 6.652047
+
+Angle: 72
+Distance: 6.654197
+
+Angle: 74
+Distance: 6.653122
+
+Angle: 76
+Distance: 6.653122
+
+Angle: 78
+Distance: 6.655272
+
+Angle: 80
+Distance: 6.648822
+
+Angle: 82
+Distance: 6.656347
+
+Angle: 84
+Distance: 6.658497
+
+Angle: 86
+Distance: 6.655272
+
+Angle: 88
+Distance: 6.652047
+
+Angle: 90
+Distance: 6.722996
+
+Angle: 92
+Distance: 6.722996
+
+Angle: 94
+Distance: 6.769221
+
+Angle: 96
+Distance: 6.817595
+
+Angle: 98
+Distance: 6.822970
+
+Angle: 100
+Distance: 7.295967
+
+Angle: 102
+Distance: 7.805512
+
+Angle: 104
+Distance: 8.822454
+
+Angle: 106
+Distance: 9.562049
+
+Angle: 108
+Distance: 117.314888
+
+Angle: 110
+Distance: 117.318115
+
+Angle: 112
+Distance: 117.307365
+
+Angle: 114
+Distance: 117.750259
+
+Angle: 116
+Distance: 142.164383
+
+Angle: 118
+Distance: 142.652435
+
+Angle: 120
+Distance: 117.840561
+
+Angle: 122
+Distance: 117.377235
+
+Angle: 124
+Distance: 117.466461
+
+Angle: 126
+Distance: 117.499786
+
+Angle: 128
+Distance: 118.253357
+
+Angle: 130
+Distance: 106.559601
+
+Angle: 132
+Distance: 105.997375
+
+Angle: 134
+Distance: 105.566307
+
+Angle: 136
+Distance: 105.451279
+
+Angle: 138
+Distance: 105.494286
+
+Angle: 140
+Distance: 105.008385
+
+Angle: 142
+Distance: 104.914864
+
+Angle: 144
+Distance: 104.887985
+
+Angle: 146
+Distance: 104.835312
+
+Angle: 148
+Distance: 104.822411
+
+Angle: 150
+Distance: 61.563683
+
+Angle: 152
+Distance: 61.065964
+
+Angle: 154
+Distance: 60.584366
+
+Angle: 156
+Distance: 60.075893
+
+Angle: 158
+Distance: 60.038269
+
+Angle: 160
+Distance: 38.851265
+
+Angle: 162
+Distance: 37.526875
+
+Angle: 164
+Distance: 36.683006
+
+Angle: 166
+Distance: 35.798290
+
+Angle: 168
+Distance: 35.748840
+
+Angle: 170
+Distance: 36.196037
+
+Angle: 172
+Distance: 37.068928
+
+Angle: 174
+Distance: 30.510406
+
+Angle: 176
+Distance: 29.613863
+
+Angle: 178
+Distance: 29.195692
+
+Angle: 180
+Distance: 29.198917
+
+END
