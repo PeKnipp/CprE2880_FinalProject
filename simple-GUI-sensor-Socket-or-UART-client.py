@@ -40,6 +40,9 @@ def main():
         scan_command_Button = tk.Button(text ="Press to Scan", command = send_scan)
         scan_command_Button.pack() # Pack the button into the window for display
 
+        scan_command_Button = tk.Button(text ="Press to Turn", command = send_turn)
+        scan_command_Button.pack() # Pack the button into the window for display
+
         window.bind("<KeyPress>", key_press)
         window.bind("<KeyRelease>", key_release)
 
@@ -69,6 +72,17 @@ def send_scan():
         global gui_send_message # Command that the GUI has requested sent to the Cybot
         
         gui_send_message = "M\n"   # Update the message for the Client to send
+
+def send_turn():
+        global gui_send_message # Command that the GUI has requested sent to the Cybot
+        global turnAmount
+        gui_send_message = "T\n"   # Update the message for the Client to send
+
+        turn_window = Toplevel(window)
+        turn_window.title("Turning Window")
+        tk.Entry(turn_window,textvariable = turnAmount)
+        tk.Button(turn_window, text="Left", command=turn_window.destroy())
+        tk.Button(turn_window, text="Right", command=turn_window.destroy())
 
 def key_press(event):
         global gui_send_message
