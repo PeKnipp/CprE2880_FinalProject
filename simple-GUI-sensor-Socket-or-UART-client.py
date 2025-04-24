@@ -78,12 +78,34 @@ def send_turn():
         global turnAmount
         gui_send_message = "T\n"   # Update the message for the Client to send
 
-        turn_window = tk.Toplevel(window)
-        turn_window.title("Turning Window")
-        tk.Entry(turn_window,textvariable = turnAmount)
-        tk.Button(turn_window, text="Left", command=turn_window.destroy())
-        tk.Button(turn_window, text="Right", command=turn_window.destroy())
-        turn_window.mainloop()
+        turn_window = tk.Toplevel()
+        turn_window.title("Turn Control")
+
+        # Function to handle the turn action
+        def handle_turn(direction):
+                degrees = degrees_entry.get()
+                if degrees.isdigit():
+                        degrees = int(degrees)
+                        # Here you can add the logic to handle the turn
+                        
+                        turn_window.destroy()  # Close the top window after action
+                else:
+                        messagebox.showerror("Input Error", "Please enter a valid number of degrees.")
+
+        # Create a label for instructions
+        label = tk.Label(turn_window, text="Enter degrees to turn:")
+        label.pack(pady=10)
+
+        # Create an entry for degrees input
+        degrees_entry = tk.Entry(turn_window)
+        degrees_entry.pack(pady=10)
+
+        # Create buttons for left and right turns
+        left_button = tk.Button(turn_window, text="Turn Left", command=lambda: handle_turn("Left"))
+        left_button.pack(side=tk.LEFT, padx=20, pady=20)
+
+        right_button = tk.Button(turn_window, text="Turn Right", command=lambda: handle_turn("Right"))
+        right_button.pack(side=tk.RIGHT, padx=20, pady=20)
 
 def key_press(event):
         global gui_send_message
