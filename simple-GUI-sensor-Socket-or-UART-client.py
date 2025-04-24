@@ -78,7 +78,7 @@ def send_turn():
         global turnAmount
         gui_send_message = "T\n"   # Update the message for the Client to send
 
-        turn_window = Toplevel(window)
+        turn_window = tk.Toplevel(window)
         turn_window.title("Turning Window")
         tk.Entry(turn_window,textvariable = turnAmount)
         tk.Button(turn_window, text="Left", command=turn_window.destroy())
