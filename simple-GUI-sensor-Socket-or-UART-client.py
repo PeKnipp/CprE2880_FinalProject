@@ -76,6 +76,7 @@ def send_scan():
 def send_turn():
         global gui_send_message # Command that the GUI has requested sent to the Cybot
         global turnAmount
+        global turnDirection
         gui_send_message = "T\n"   # Update the message for the Client to send
 
         turn_window = tk.Toplevel()
@@ -84,13 +85,14 @@ def send_turn():
         # Function to handle the turn action
         def handle_turn(direction):
                 degrees = degrees_entry.get()
-                if degrees.isdigit():
-                        degrees = int(degrees)
+                if degrees.isdigit() and int(degrees) > 0 and int(degrees) < 91:
+                        turnAmount = int(degrees)
+                        turnDirection = direction
                         # Here you can add the logic to handle the turn
                         
                         turn_window.destroy()  # Close the top window after action
                 else:
-                        messagebox.showerror("Input Error", "Please enter a valid number of degrees.")
+                        messagebox.showerror("Input Error", "Please enter a valid number of degrees. (Between 0 and 91)")
 
         # Create a label for instructions
         label = tk.Label(turn_window, text="Enter degrees to turn:")
