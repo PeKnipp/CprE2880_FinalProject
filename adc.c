@@ -6,11 +6,11 @@
  */
 
 
+#include <uart.h>
 #include "adc.h"
 #include "timer.h"
 #include "lcd.h"
 #include "stdio.h"
-#include "uart-interrupt.h"
 
 void adc_init(){
     //Start Port B

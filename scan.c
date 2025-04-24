@@ -29,8 +29,8 @@ volatile const int IR = 1;
 
 double scan(int angle, int scanType){
     /*--------------------------------------CALIBRATION--------------------------------------*/
-//    double num1 = 229.3995; //found using adc_calibrate
-//    double num2 = 27.9881; //found using adc_calibrate
+//    double num1 = 472871; //found using adc_calibrate
+//    double num2 = 1.4462; //found using adc_calibrate
     /*---------------------------------------------------------------------------------------*/
 
     double distance = 0;
@@ -39,7 +39,7 @@ double scan(int angle, int scanType){
         distance = ping_getDistance(); //getDistance does all calculations internally to find the distance to object
     }
     else if (scanType == IR){ //takes a reading using the IR sensor
-//        distance = pow((num1/adc_read()), num2); //calculations to use the ADC voltage to estimate distance
+        //distance = pow((num1/adc_read()), num2); //calculations to use the ADC voltage to estimate distance
         distance = adc_read();
 //                num1 - (num2*log(adc_read()));
     }

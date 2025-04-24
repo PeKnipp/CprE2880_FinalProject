@@ -1,26 +1,31 @@
 /*
  * movement.h
  *
- *  Created on: Feb 7, 2025
- *      Author: pknipper
+ *  Created on: Feb 6, 2025
+ *      Author: mansa
  */
 
-#ifndef LAB2_CODE_FILES_MOVEMENT_H_
-#define LAB2_CODE_FILES_MOVEMENT_H_
+#ifndef MOVEMENT_H_
+#define MOVEMENT_H_
 
 #include "open_interface.h"
-#include "lcd.h"
 
-double move_forward(oi_t *sensor_data, double distance_mm);
+
+
+double move_forward(oi_t *sensor_data, double distance_mm); //func def, connects movement.c to main.c
 
 double move_backward(oi_t *sensor_data, double distance_mm);
 
-double turn_right(oi_t *sensor, double degrees);
+double turn_right(oi_t *sensor_data, double degrees);
 
-double turn_left(oi_t *sensor, double degrees);
+double turn_left(oi_t *sensor_data, double degrees);
 
-double bump_right(oi_t *sensor);
+double movement_bumping(oi_t *sensor_data, double distance_mm);
 
-double bump_left(oi_t *sensor);
+void bump(int dir);
 
-#endif /* LAB2_CODE_FILES_MOVEMENT_H_ */
+void hole(int dir);
+
+
+
+#endif /* MOVEMENT_H_ */

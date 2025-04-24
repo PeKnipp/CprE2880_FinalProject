@@ -20,12 +20,23 @@
 #include "driverlib/interrupt.h"
 #include "Timer.h"
 
-extern volatile const int SONAR;
-extern volatile const int IR;
+extern volatile const int DISTANCE;
+extern volatile const int ANGLE;
+extern volatile const int BUMP;
+
+extern volatile const int HOLE;
+extern volatile const int BOUNDARY;
+extern volatile const int END;
+
+extern volatile const int FAR_LEFT;
+extern volatile const int LEFT;
+extern volatile const int RIGHT;
+extern volatile const int FAR_RIGHT;
 
 /**
  * Takes a scan at the given angle of type scanType
  */
-double scan(int angle, int scanType);
+void uart_sendData(int dataType, int dataVal);
+void uart_sendHole(int holeType, int holeDir);
 
 #endif /* SCAN_H_ */

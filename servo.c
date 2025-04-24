@@ -4,11 +4,12 @@
  *  Created on: Apr 8, 2025
  *      Author: pknipper
  */
+#include <uart.h>
 #include "servo.h"
 
 /*--------------------------------------CALIBRATION--------------------------------------*/
-volatile uint32_t true_0 = 0x4C587;
-volatile uint32_t true_180 = 0x45E67;
+volatile uint32_t true_0 = 0x4BFD3;
+volatile uint32_t true_180 = 0x45151;
 volatile uint8_t calibrated = 1; //set to 1 if calibrated values are set
 /*---------------------------------------------------------------------------------------*/
 
@@ -67,6 +68,8 @@ void servo_calibrate(void){
     int16_t angle = 0;
     uint32_t match_value;
     char info[100];
+    char print0[10];
+    char print180[10];
 
     servo_move(angle);
 
@@ -90,6 +93,8 @@ void servo_calibrate(void){
         timer_waitMillis(100);
     }
     true_0 = match_value;
+    sprintf(print0, "\n\rThe true_0 value is 0x%X\n\r", true_0);
+    uart_sendStr(print0);
     angle = 180;
     servo_move(angle);
     button = 0;
@@ -112,6 +117,8 @@ void servo_calibrate(void){
         timer_waitMillis(100);
     }
     true_180 = match_value;
+    sprintf(print180, "The true_180 value is 0x%X\n\r", true_180);
+    uart_sendStr(print180);
     calibrated = 1;
     servo_move(90);
 
