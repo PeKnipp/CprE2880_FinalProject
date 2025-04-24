@@ -83,6 +83,7 @@ def send_turn():
         tk.Entry(turn_window,textvariable = turnAmount)
         tk.Button(turn_window, text="Left", command=turn_window.destroy())
         tk.Button(turn_window, text="Right", command=turn_window.destroy())
+        turn_window.mainloop()
 
 def key_press(event):
         global gui_send_message
