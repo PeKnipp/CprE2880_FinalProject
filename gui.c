@@ -31,31 +31,31 @@ void uart_sendData(int dataType, int dataVal)
     char data[100];
     if (dataType == DISTANCE)
     {
-        sprintf(data, "Distance %d\n", dataVal);
+        sprintf(data, "Distance %d\n\r", dataVal);
         uart_sendStr(data);
     }
     if (dataType == ANGLE)
     {
-        sprintf(data, "Angle %d\n", dataVal);
+        sprintf(data, "Angle %d\n\r", dataVal);
         uart_sendStr(data);
     }
     if (dataType == BUMP)
     {
         if (dataType == FAR_LEFT)
         {
-            sprintf(data, "BUMP FAR_LEFT\n");
+            sprintf(data, "BUMP FAR_LEFT\n\r");
         }
         if (dataVal == LEFT)
         {
-            sprintf(data, "BUMP LEFT\n");
+            sprintf(data, "BUMP LEFT\n\r");
         }
         if (dataVal == RIGHT)
         {
-            sprintf(data, "BUMP RIGHT\n");
+            sprintf(data, "BUMP RIGHT\n\r");
         }
         if (dataVal == FAR_RIGHT)
         {
-            sprintf(data, "BUMP FAR_RIGHT\n");
+            sprintf(data, "BUMP FAR_RIGHT\n\r");
         }
         uart_sendStr(data);
     }
@@ -91,19 +91,19 @@ void uart_sendHole(int holeType, int holeDir)
     {
         if (holeDir == FAR_LEFT)
         {
-            sprintf(data, "HOLE HOLE FAR_LEFT");
+            sprintf(data, "HOLE HOLE FAR_LEFT\n\r");
         }
         if (holeDir == LEFT)
         {
-            sprintf(data, "HOLE HOLE LEFT");
+            sprintf(data, "HOLE HOLE LEFT\n\r");
         }
         if (holeDir == RIGHT)
         {
-            sprintf(data, "HOLE HOLE RIGHT");
+            sprintf(data, "HOLE HOLE RIGHT\n\r");
         }
         if (holeDir == FAR_RIGHT)
         {
-            sprintf(data, "HOLE HOLE FAR_RIGHT");
+            sprintf(data, "HOLE HOLE FAR_RIGHT\n\r");
         }
     }
 
@@ -111,19 +111,19 @@ void uart_sendHole(int holeType, int holeDir)
     {
         if (holeDir == FAR_LEFT)
         {
-            sprintf(data, "HOLE BOUNDARY FAR_LEFT");
+            sprintf(data, "HOLE BOUNDARY FAR_LEFT\n\r");
         }
         if (holeDir == LEFT)
         {
-            sprintf(data, "HOLE BOUNDARY LEFT");
+            sprintf(data, "HOLE BOUNDARY LEFT\n\r");
         }
         if (holeDir == RIGHT)
         {
-            sprintf(data, "HOLE BOUNDARY RIGHT");
+            sprintf(data, "HOLE BOUNDARY RIGHT\n\r");
         }
         if (holeDir == FAR_RIGHT)
         {
-            sprintf(data, "HOLE BOUNDARY FAR_RIGHT");
+            sprintf(data, "HOLE BOUNDARY FAR_RIGHT\n\r");
         }
 
     }
@@ -132,19 +132,19 @@ void uart_sendHole(int holeType, int holeDir)
     {
         if (holeDir == FAR_LEFT)
         {
-            sprintf(data, "HOLE END FAR_LEFT");
+            sprintf(data, "HOLE END FAR_LEFT\n\r");
         }
         if (holeDir == LEFT)
         {
-            sprintf(data, "HOLE END LEFT");
+            sprintf(data, "HOLE END LEFT\n\r");
         }
         if (holeDir == RIGHT)
         {
-            sprintf(data, "HOLE END RIGHT");
+            sprintf(data, "HOLE END RIGHT\n\r");
         }
         if (holeDir == FAR_RIGHT)
         {
-            sprintf(data, "HOLE END FAR_RIGHT");
+            sprintf(data, "HOLE END FAR_RIGHT\n\r");
         }
     }
 }

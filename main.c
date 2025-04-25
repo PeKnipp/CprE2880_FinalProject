@@ -49,6 +49,7 @@ int main(void)
     scanType = 'i';
     uart_sendStr("\n\rReady to scan: IR Sensor\n\n\r"); //indicates the bot is ready to scan
     distance_threshold = 710; //reassigning value since the IR sensors values are different
+    degree_increment = 1;
 
     while (1)
     {

@@ -13,6 +13,7 @@
 #include "scan.h"
 
 extern volatile double distance_threshold;
+extern volatile int degree_increment;
 
 void lcd_input();
 

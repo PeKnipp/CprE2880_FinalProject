@@ -9,35 +9,6 @@
 #include "movement.h"
 #include "gui.h"
 
-double move_forward(oi_t *sensor_data, double distance_mm)
-{
-
-    double sum = 0; //init sum var, which stores the data from the distance sensor
-
-    oi_setWheels(300, 300); //sets the speed of the left and right wheels, respectively
-
-    while (sum < distance_mm)
-    { //runs irobot until the sum data is equal to the specified distance
-        oi_update(sensor_data);
-        sum += sensor_data->distance; //sends a pointer to distance, stores the value in the temp var sum
-    }
-    //oi_setWheels(0, 0); //stops the robot when while loop is finished
-    return sum;
-}
-
-double move_backward(oi_t *sensor_data, double distance_mm)
-{
-    double sum = 0; //init sum var, which stores the data from the distance sensor
-    oi_setWheels(-100, -100); //sets the speed of the left and right wheels, respectively
-    while (sum >= -distance_mm) //runs irobot until the sum data is equal to the specified distance
-    {
-        oi_update(sensor_data);
-        sum += sensor_data->distance; //sends a pointer to angle, stores the value in the temp var sum
-    }
-    oi_setWheels(0, 0); //stops the robot when while loop is finished
-    return sum;
-}
-
 double turn_right(oi_t *sensor_data, double degrees)
 {
     degrees *= 0.7;
@@ -48,6 +19,7 @@ double turn_right(oi_t *sensor_data, double degrees)
     {
         oi_update(sensor_data);
         sum += sensor_data->angle; //sends a pointer to angle, stores the value in the temp var sum
+        uart_sendData(ANGLE, -1);
     }
     oi_setWheels(0, 0);
     return sum;
@@ -61,6 +33,7 @@ double turn_left(oi_t *sensor_data, double degrees)
     {
         oi_update(sensor_data);
         sum += sensor_data->angle; //sends a pointer to angle, stores the value in the temp var sum
+        uart_sendData(ANGLE, 1);
     }
     oi_setWheels(0, 0); // stops the robot when while loop is finished
     return sum;
@@ -80,6 +53,7 @@ double movement_bumping(oi_t *sensor_data, double distance_mm) //once roomba bum
         { //runs irobot until the sum data is equal to the specified distance
             oi_update(sensor_data);
             sum += sensor_data->distance; //sends a pointer to distance, stores the value in the temp var sum
+            uart_sendData(DISTANCE, 10);
         }
 
         if (sensor_data->bumpLeft)
