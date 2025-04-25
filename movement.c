@@ -42,6 +42,7 @@ double movement_bumping(oi_t *sensor_data, double distance_mm) //once roomba bum
 {
     double CALIBRATION_VALUE = 1.25;
     double sum = 0;
+    int reading;
     distance_mm *= CALIBRATION_VALUE;
     while (sum < distance_mm)
     {
@@ -73,14 +74,33 @@ double movement_bumping(oi_t *sensor_data, double distance_mm) //once roomba bum
         else if (sensor_data->cliffLeft)
         {
             oi_update(sensor_data);
-            hole(RIGHT);
+            reading = sensor_data->cliffLeftSignal;
+            hole(reading, FAR_LEFT);
             break;
         }
 
         else if (sensor_data->cliffRight)
         {
             oi_update(sensor_data);
-            hole(RIGHT);
+            reading = sensor_data->cliffRightSignal;
+            hole(reading, FAR_RIGHT);
+            break;
+        }
+
+        else if (sensor_data->cliffFrontLeft)
+        {
+            oi_update(sensor_data);
+            reading = sensor_data->cliffFrontLeftSignal;
+            hole(reading, LEFT);
+            break;
+        }
+
+        else if (sensor_data->cliffFrontRight)
+        {
+            oi_update(sensor_data);
+            reading = sensor_data->cliffFrontRightSignal;
+            lcd_printf("%d", reading); //for testing
+            hole(reading, RIGHT);
             break;
         }
 
@@ -102,7 +122,7 @@ void bump(int dir)
 
 #warning add parameter for the strength of the hole, compare to thresholds in if statements
 
-void hole(int dir)
+void hole(int reading, int dir)
 {
     double tape_threshold;//TODO: find threshold for tape
     double hole_threshold;//TODO: find threshold for hole
@@ -110,9 +130,11 @@ void hole(int dir)
     if (tape_threshold)
     {
         uart_sendHole(BOUNDARY, dir);
+        //TODO: add end_hole if necessary
     }
     else if (hole_threshold){
         uart_sendHole(HOLE, dir);
+        //TODO: add end_hole if necessary
     }
 }
 

@@ -24,7 +24,8 @@ double movement_bumping(oi_t *sensor_data, double distance_mm);
 
 void bump(int dir);
 
-void hole(int dir);
+void hole(int reading, int dir);
+
 
 
 
