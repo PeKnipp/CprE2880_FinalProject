@@ -22,7 +22,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.colors import ListedColormap
 
 import CyBot_Plot_Sensor_Scan_Values_From_File as valFromFile
-from roomba_mapper import RoombaMapper
+from CyBot_mapper import CyBotMapper
 
 ##### START Define Functions  #########
 
@@ -33,7 +33,7 @@ def main():
 
         # Create mapper instance
         global mapper
-        mapper = RoombaMapper(window)
+        mapper = CyBotMapper(window)
 
         # Last command label  
         global Last_command_Label  # Made global so that Client function (socket_thread) can modify
@@ -177,7 +177,7 @@ def socket_thread():
         # Define Globals
         global Last_command_Label # GUI label for displaying the last command sent to the Cybot
         global gui_send_message   # Command that the GUI has requested be sent to the Cybot
-        global mapper  # Roomba mapper instance
+        global mapper  # CyBot mapper instance
 
         # A little python magic to make it more convient for you to adjust where you want the data file to live
         # Link for more info: https://towardsthecloud.com/get-relative-path-python 

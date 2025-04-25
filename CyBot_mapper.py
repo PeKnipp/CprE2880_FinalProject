@@ -6,7 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.colors import ListedColormap
 import tkinter as tk
 
-class RoombaMapper:
+class CybotMapper:
     def __init__(self, master):
         # Store the master window for color changes
         self.master = master
@@ -16,9 +16,9 @@ class RoombaMapper:
         self.y = 0
         self.angle = 0  # in degrees
         
-        # Roomba dimensions (in mm)
-        self.roomba_diameter = 304.8  # 1 foot = 304.8 mm
-        self.roomba_radius = self.roomba_diameter / 2  # Radius for circular representation
+        # CyBot dimensions (in mm)
+        self.CyBot_diameter = 304.8  # 1 foot = 304.8 mm
+        self.CyBot_radius = self.CyBot_diameter / 2  # Radius for circular representation
         
         # Initialize map parameters
         self.resolution = 10  # 10mm per cell
@@ -38,8 +38,8 @@ class RoombaMapper:
         self.update_map_display()
         
         # Initialize plot elements
-        self.roomba_point, = self.ax.plot([], [], 'bo', markersize=10)
-        self.roomba_direction, = self.ax.plot([], [], 'b-', linewidth=2)
+        self.CyBot_point, = self.ax.plot([], [], 'bo', markersize=10)
+        self.CyBot_direction, = self.ax.plot([], [], 'b-', linewidth=2)
         
         # Create custom colormap for different obstacle types
         colors = ['white', 'black', 'red', 'yellow']  # free space, obstacle, boundary, hole
@@ -119,7 +119,7 @@ class RoombaMapper:
         # Update plot limits
         self.ax.set_xlim(self.min_x, self.max_x)
         self.ax.set_ylim(self.min_y, self.max_y)
-        self.ax.set_title('Roomba Position and Obstacle Map')
+        self.ax.set_title('CyBot Position and Obstacle Map')
         self.ax.grid(True)
 
     def update_position(self, distance):
@@ -151,7 +151,7 @@ class RoombaMapper:
 
     def handle_bump(self, direction):
         # Add bump location to obstacle map
-        bump_distance = 100  # 100mm from center of Roomba
+        bump_distance = 100  # 100mm from center of CyBot
         rad_angle = math.radians(self.angle)
         
         if direction == 'FAR_LEFT':
@@ -180,7 +180,7 @@ class RoombaMapper:
 
     def handle_hole(self, hole_type, direction):
         # Add hole location to obstacle map
-        hole_distance = 100  # 100mm from center of Roomba
+        hole_distance = 100  # 100mm from center of CyBot
         rad_angle = math.radians(self.angle)
         
         # Determine hole angle based on direction
@@ -214,27 +214,27 @@ class RoombaMapper:
         self.change_window_color("blue", 1000)  # Blue for 1 second
 
     def update_plot(self, frame):
-        # Update Roomba position
-        self.roomba_point.set_data([self.x], [self.y])
+        # Update CyBot position
+        self.CyBot_point.set_data([self.x], [self.y])
         
-        # Update Roomba direction indicator and size
-        direction_length = self.roomba_diameter  # Use Roomba diameter for direction indicator
+        # Update CyBot direction indicator and size
+        direction_length = self.CyBot_diameter  # Use CyBot diameter for direction indicator
         rad_angle = math.radians(self.angle)
         end_x = self.x + direction_length * math.cos(rad_angle)
         end_y = self.y + direction_length * math.sin(rad_angle)
-        self.roomba_direction.set_data([self.x, end_x], [self.y, end_y])
+        self.CyBot_direction.set_data([self.x, end_x], [self.y, end_y])
         
-        # Draw Roomba circle
-        if hasattr(self, 'roomba_circle'):
-            self.roomba_circle.remove()
+        # Draw CyBot circle
+        if hasattr(self, 'CyBot_circle'):
+            self.CyBot_circle.remove()
         
         # Create and add circle
-        self.roomba_circle = plt.Circle((self.x, self.y), self.roomba_radius, 
+        self.CyBot_circle = plt.Circle((self.x, self.y), self.CyBot_radius, 
                                        facecolor='blue', alpha=0.5)
-        self.ax.add_patch(self.roomba_circle)
+        self.ax.add_patch(self.CyBot_circle)
         
         # Update obstacle map
         self.obstacle_plot.set_array(self.obstacle_map.T)
         self.obstacle_plot.set_extent([self.min_x, self.max_x, self.min_y, self.max_y])
         
-        return self.roomba_point, self.roomba_direction, self.obstacle_plot, self.roomba_circle
+        return self.CyBot_point, self.CyBot_direction, self.obstacle_plot, self.CyBot_circle
