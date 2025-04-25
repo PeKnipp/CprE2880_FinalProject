@@ -22,7 +22,7 @@ char hazards(oi_t *sensor_data);
 
 void bump(int dir);
 
-void hole(int dir);
+void hole(int reading, int dir);
 
 
 

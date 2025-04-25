@@ -31,7 +31,7 @@ void move_forward(oi_t *sensor_data, double distance_mm)
 //        }
 //        else
 //        {
-            sum += sensor_data->distance;
+        sum += sensor_data->distance;
 //        }
     }
     oi_setWheels(0, 0);
@@ -42,7 +42,7 @@ void move_backward(oi_t *sensor_data, double distance_mm)
     double CALIBRATION_VALUE = 1.25;
     distance_mm *= CALIBRATION_VALUE;
     double sum = 0;
-    while (sum > -1*distance_mm)
+    while (sum > -1 * distance_mm)
     {
         oi_update(sensor_data);
         oi_setWheels(-150, -150);
@@ -58,7 +58,7 @@ void move_backward(oi_t *sensor_data, double distance_mm)
 //        }
 //        else
 //        {
-            sum += sensor_data->distance;
+        sum += sensor_data->distance;
 //        }
     }
     oi_setWheels(0, 0);
@@ -141,41 +141,56 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
     else if (sensor_data->cliffLeft)
     {
         oi_update(sensor_data);
-        hole(RIGHT);
+        reading = sensor_data->cliffLeftSignal;
+        hole(reading, FAR_LEFT);
+        return 1;
+    }
+
+    else if (sensor_data->cliffFrontLeft)
+    {
+        oi_update(sensor_data);
+        reading = sensor_data->cliffFrontLeftSignal;
+        hole(reading, LEFT);
+        return 1;
+    }
+
+    else if (sensor_data->cliffFrontRight)
+    {
+        oi_update(sensor_data);
+        reading = sensor_data->cliffFrontRightSignal;
+        hole(reading, RIGHT);
         return 1;
     }
 
     else if (sensor_data->cliffRight)
     {
         oi_update(sensor_data);
-        hole(RIGHT);
+        reading = sensor_data->cliffRightSignal;
+        hole(reading, FAR_RIGHT);
         return 1;
     }
+
     else
     {
         return 0;
     }
 }
 
-void bump(int dir)
-{
-    uart_sendData(BUMP, dir);
-}
-
-#warning add parameter for the strength of the hole, compare to thresholds in if statements
-
-void hole(int dir)
+void hole(int reading, int dir)
 {
     double tape_threshold; //TODO: find threshold for tape
     double hole_threshold; //TODO: find threshold for hole
-//detect hole range for boundary
+    //detect hole range for boundary
     if (tape_threshold)
     {
         uart_sendHole(BOUNDARY, dir);
     }
+    //detect hole range for pit
     else if (hole_threshold)
     {
         uart_sendHole(HOLE, dir);
+
     }
+    //TODO: add end_hole if necessary
 }
 
