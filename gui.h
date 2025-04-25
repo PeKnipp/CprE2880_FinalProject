@@ -1,5 +1,5 @@
 /**
- * scan.c: Functions for moving the sensor towards a specified angle and taking a reading from one of the sensors
+ * gui.h
  *
  *  @author Christopher Ledo
  *  @date 4/18/2025
@@ -8,8 +8,8 @@
  */
 
 
-#ifndef SCAN_H_
-#define SCAN_H_
+#ifndef GUI_H_
+#define GUI_H_
 
 #include <servo.h>
 #include <ping.h>
@@ -38,5 +38,6 @@ extern volatile const int FAR_RIGHT;
  */
 void uart_sendData(int dataType, int dataVal);
 void uart_sendHole(int holeType, int holeDir);
+void uart_sendObject(double diameter, double angle, double distance);
 
-#endif /* SCAN_H_ */
+#endif /* GUI_H_ */

@@ -12,20 +12,17 @@
 
 
 
-double move_forward(oi_t *sensor_data, double distance_mm); //func def, connects movement.c to main.c
+void turn_right(oi_t *sensor_data, double degrees);
 
-double move_backward(oi_t *sensor_data, double distance_mm);
+void turn_left(oi_t *sensor_data, double degrees);
 
-double turn_right(oi_t *sensor_data, double degrees);
+void movement(oi_t *sensor_data);
 
-double turn_left(oi_t *sensor_data, double degrees);
-
-double movement_bumping(oi_t *sensor_data, double distance_mm);
+char hazards(oi_t *sensor_data);
 
 void bump(int dir);
 
-void hole(int reading, int dir);
-
+void hole(int dir);
 
 
 

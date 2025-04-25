@@ -53,10 +53,9 @@ int main(void)
 
     while (1)
     {
+        movement(sensor_data);
         detect_objects(sensor_data, scanType, distance_threshold);
-        smallest_object();
         print_objects();
-        drive_smallest_object();
         change_parameters();
         if (command_byte == '\e')
         {

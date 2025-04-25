@@ -147,4 +147,11 @@ void uart_sendHole(int holeType, int holeDir)
             sprintf(data, "HOLE END FAR_RIGHT\n\r");
         }
     }
+    uart_sendStr(data);
+}
+
+extern void uart_sendObject(double diameter, double angle, double distance){
+    char data[100];
+    sprintf(data, "OBJECT ANGLE %f DISTANCE %f DIAMETER %f\n\r", angle, distance, diameter);
+    uart_sendStr(data);
 }
