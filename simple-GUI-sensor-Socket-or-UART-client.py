@@ -39,6 +39,11 @@ def main():
         global Last_command_Label  # Made global so that Client function (socket_thread) can modify
         Last_command_Label = tk.Label(text="Last Command Sent: ") # Creat a Label
         Last_command_Label.pack() # Pack the label into the window for display
+        
+        # Last received command label
+        global Last_received_Label  # Made global so that Client function (socket_thread) can modify
+        Last_received_Label = tk.Label(text="Last Command Received: ") # Create a Label
+        Last_received_Label.pack() # Pack the label into the window for display
 
         # Quit command Button
         quit_command_Button = tk.Button(text ="Press to Quit", command = send_quit)
@@ -214,6 +219,9 @@ def socket_thread():
                             data = rx_message.decode().strip()
                             print("Received: " + data)
                             
+                            # Update the Last received command label
+                            Last_received_Label.config(text="Last Command Received: " + data)
+                            
                             # Update map regardless of command state
                             if data.startswith('Distance'):
                                 distance = int(data.split()[1])
@@ -227,11 +235,22 @@ def socket_thread():
                             elif data.startswith('HOLE'):
                                 _, hole_type, direction = data.split()
                                 mapper.handle_hole(hole_type, direction)
+                            # Handle scan object data
+                            elif data.startswith('Object'):
+                                try:
+                                    parts = data.split()
+                                    object_distance = int(parts[1])
+                                    object_angle = int(parts[2])
+                                    mapper.handle_scan_object(object_distance, object_angle)
+                                except (ValueError, IndexError) as e:
+                                    print(f"Error parsing scan data: {e}")
                     except socket.timeout:
-                        pass  # No data received within timeout
+                        # Just continue on timeout, no need to print anything
+                        continue
                     except Exception as e:
                         print(f"Error in receive thread: {e}")
-                        break
+                        # Don't break the thread on errors, just continue
+                        continue
 
         # Start the receive thread
         receive_thread = threading.Thread(target=receive_data_thread)

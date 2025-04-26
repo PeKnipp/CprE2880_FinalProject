@@ -6,7 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.colors import ListedColormap
 import tkinter as tk
 
-class CybotMapper:
+class CyBotMapper:
     def __init__(self, master):
         # Store the master window for color changes
         self.master = master
@@ -17,8 +17,13 @@ class CybotMapper:
         self.angle = 0  # in degrees
         
         # CyBot dimensions (in mm)
-        self.CyBot_diameter = 304.8  # 1 foot = 304.8 mm
+        # 12.5 inches = 317.5 mm diameter
+        self.CyBot_diameter = 317.5  # 12.5 inches = 317.5 mm
         self.CyBot_radius = self.CyBot_diameter / 2  # Radius for circular representation
+        
+        # Servo and sensor dimensions
+        self.servo_offset = 101.6  # 4 inches = 101.6 mm from center
+        self.sensor_extension = 50.8  # 2 inches = 50.8 mm past servo point
         
         # Initialize map parameters
         self.resolution = 10  # 10mm per cell
@@ -42,7 +47,7 @@ class CybotMapper:
         self.CyBot_direction, = self.ax.plot([], [], 'b-', linewidth=2)
         
         # Create custom colormap for different obstacle types
-        colors = ['white', 'black', 'red', 'yellow']  # free space, obstacle, boundary, hole
+        colors = ['white', 'black', 'red', 'yellow', 'green']  # free space, obstacle, boundary, hole, scanned object
         self.obstacle_plot = self.ax.imshow(self.obstacle_map.T, 
                                           extent=[-self.map_size/2, self.map_size/2, 
                                                  -self.map_size/2, self.map_size/2],
@@ -52,12 +57,22 @@ class CybotMapper:
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
         
-        # Start animation
-        self.anim = FuncAnimation(self.fig, self.update_plot, interval=100, blit=True)
+        # Use a different approach for animation to avoid the _resize_id error
+        self.animation_running = True
+        self.animation_timer = None
+        self.start_animation()
         
         # Initialize color change timer
         self.color_timer = None
         self.default_bg_color = master.cget("bg")  # Store the default background color
+        
+        # Initialize scan visualization elements
+        self.servo_point, = self.ax.plot([], [], 'ro', markersize=5)
+        self.sensor_arc, = self.ax.plot([], [], 'r--', linewidth=1)
+        self.scan_objects = []  # List to store scan objects
+        
+        # Bind cleanup to window close event
+        master.protocol("WM_DELETE_WINDOW", self.cleanup)
 
     def change_window_color(self, color, duration=1000):
         """Change the window background color for a specified duration (in ms)"""
@@ -212,6 +227,39 @@ class CybotMapper:
                 
         # Change window color to blue for hole
         self.change_window_color("blue", 1000)  # Blue for 1 second
+        
+    def handle_scan_object(self, distance, angle):
+        """
+        Handle object data from scan
+        distance: Distance to object in mm
+        angle: Angle to object in degrees (relative to CyBot's heading)
+        """
+        # Convert angle to radians
+        rad_angle = math.radians(self.angle + angle)
+        
+        # Calculate object position
+        # First calculate position relative to servo pivot point
+        servo_x = self.x + self.servo_offset * math.cos(math.radians(self.angle))
+        servo_y = self.y + self.servo_offset * math.sin(math.radians(self.angle))
+        
+        # Then calculate object position from servo pivot
+        object_x = servo_x + distance * math.cos(rad_angle)
+        object_y = servo_y + distance * math.sin(rad_angle)
+        
+        # Convert to grid coordinates
+        grid_x = int((object_x - self.min_x) / self.resolution)
+        grid_y = int((object_y - self.min_y) / self.resolution)
+        
+        # Update obstacle map (value 4 for scanned objects)
+        if 0 <= grid_x < self.grid_size and 0 <= grid_y < self.grid_size:
+            self.obstacle_map[grid_x, grid_y] = 4
+            
+        # Store object for visualization
+        self.scan_objects.append((object_x, object_y))
+        
+        # Limit the number of stored objects to prevent memory issues
+        if len(self.scan_objects) > 100:
+            self.scan_objects.pop(0)
 
     def update_plot(self, frame):
         # Update CyBot position
@@ -233,8 +281,70 @@ class CybotMapper:
                                        facecolor='blue', alpha=0.5)
         self.ax.add_patch(self.CyBot_circle)
         
+        # Update servo pivot point and sensor arc if they exist
+        if hasattr(self, 'servo_point') and hasattr(self, 'sensor_arc'):
+            # Update servo pivot point
+            servo_x = self.x + self.servo_offset * math.cos(rad_angle)
+            servo_y = self.y + self.servo_offset * math.sin(rad_angle)
+            self.servo_point.set_data([servo_x], [servo_y])
+            
+            # Update sensor arc (sweep area)
+            # Create an arc of points representing the sensor sweep
+            arc_angle_start = self.angle - 90  # -90 degrees from center
+            arc_angle_end = self.angle + 90    # +90 degrees from center
+            arc_points = 20
+            arc_x = []
+            arc_y = []
+            
+            for i in range(arc_points + 1):
+                t = i / arc_points
+                arc_angle = arc_angle_start + t * (arc_angle_end - arc_angle_start)
+                arc_rad = math.radians(arc_angle)
+                
+                # Calculate point at the end of the sensor
+                sensor_length = self.CyBot_radius + self.sensor_extension
+                arc_x.append(servo_x + sensor_length * math.cos(arc_rad))
+                arc_y.append(servo_y + sensor_length * math.sin(arc_rad))
+                
+            self.sensor_arc.set_data(arc_x, arc_y)
+        
         # Update obstacle map
         self.obstacle_plot.set_array(self.obstacle_map.T)
         self.obstacle_plot.set_extent([self.min_x, self.max_x, self.min_y, self.max_y])
         
-        return self.CyBot_point, self.CyBot_direction, self.obstacle_plot, self.CyBot_circle
+        # Return all plot elements that need to be updated
+        if hasattr(self, 'servo_point') and hasattr(self, 'sensor_arc'):
+            return self.CyBot_point, self.CyBot_direction, self.obstacle_plot, self.CyBot_circle, self.servo_point, self.sensor_arc
+        else:
+            return self.CyBot_point, self.CyBot_direction, self.obstacle_plot, self.CyBot_circle
+
+    def start_animation(self):
+        """Start the animation using a timer-based approach"""
+        if self.animation_running:
+            self.update_plot(None)
+            self.animation_timer = self.master.after(100, self.start_animation)
+            
+    def stop_animation(self):
+        """Stop the animation"""
+        self.animation_running = False
+        if self.animation_timer:
+            self.master.after_cancel(self.animation_timer)
+            self.animation_timer = None
+
+    def cleanup(self):
+        """Clean up resources when window is closed"""
+        # First stop the animation to prevent callbacks after window destruction
+        self.stop_animation()
+        
+        # Cancel any pending color change timers
+        if self.color_timer:
+            self.master.after_cancel(self.color_timer)
+            self.color_timer = None
+            
+        # Use a small delay before destroying the window to ensure all callbacks are canceled
+        self.master.after(10, self._destroy_window)
+        
+    def _destroy_window(self):
+        """Actually destroy the window after a small delay"""
+        if hasattr(self, 'master') and self.master.winfo_exists():
+            self.master.destroy()
