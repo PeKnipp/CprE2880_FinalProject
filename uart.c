@@ -26,9 +26,7 @@ volatile char command_byte_LEFT = 'a';
 volatile char command_byte_RIGHT = 'd';
 volatile char command_byte_HALT = ' ';
 volatile char command_byte_ESCAPE = '\e'; //added by Chris 4/22
-volatile char command_byte_OBJECTS = 'o';
 volatile char command_byte_PRINT = 'p';
-volatile char command_byte_DRIVE = 'i';
 volatile char command_byte_CHANGE = 'c';
 volatile char command_byte_THRESHOLD = 't';
 volatile int command_flag = 0; // flag to tell the main program a special command was received
@@ -220,25 +218,9 @@ void UART1_Handler(void)
             {
                 command_flag = 11;
             }
-            if (command_byte == command_byte_OBJECTS)
-            {
-                command_flag = 12;
-            }
             if (command_byte == command_byte_PRINT)
             {
-                command_flag = 13;
-            }
-            if (command_byte == command_byte_DRIVE)
-            {
-                command_flag = 14;
-            }
-            if (command_byte == command_byte_CHANGE)
-            {
-                command_flag = 15;
-            }
-            if (command_byte ==  command_byte_THRESHOLD)
-            {
-                command_flag = 16;
+                command_flag = 12;
             }
         }
     }

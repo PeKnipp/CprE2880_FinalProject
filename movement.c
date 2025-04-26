@@ -8,133 +8,189 @@
 #include "open_interface.h"
 #include "movement.h"
 #include "gui.h"
+#include "uart.h"
 
-double turn_right(oi_t *sensor_data, double degrees)
-{
-    degrees *= 0.7;
-    double sum = 0;
-    oi_setWheels(-175, 175); // sets the speed of the left wheel to move backward and the right wheel to move forward, which turns the robot right
-    //DEVNOTE: This movement logs the sum value negatively, so the mathematical operations are inverted from the turn_left method.
-    while (sum >= -degrees) //turns the irobot right. sum value decriments until it reaches the specified degree value.
-    {
-        oi_update(sensor_data);
-        sum += sensor_data->angle; //sends a pointer to angle, stores the value in the temp var sum
-        uart_sendData(ANGLE, -1);
-    }
-    oi_setWheels(0, 0);
-    return sum;
-}
-double turn_left(oi_t *sensor_data, double degrees)
-{
-    degrees *= 0.7;
-    double sum = 0;
-    oi_setWheels(175, -175); //sets the speed of the right wheel to move forward and the left wheel to move backward, which turns the robot left.
-    while (sum < degrees) //turns irobot left. sum value increments until it reaches the specified degree value.
-    {
-        oi_update(sensor_data);
-        sum += sensor_data->angle; //sends a pointer to angle, stores the value in the temp var sum
-        uart_sendData(ANGLE, 1);
-    }
-    oi_setWheels(0, 0); // stops the robot when while loop is finished
-    return sum;
-}
-double movement_bumping(oi_t *sensor_data, double distance_mm) //once roomba bumps, gets called, will retreat, turn, go forward, turn, and subtract the sum value from the distance_mm value to compensate for distance traveled when doing the turning cycle
+void move_forward(oi_t *sensor_data, double distance_mm)
 {
     double CALIBRATION_VALUE = 1.25;
-    double sum = 0;
-    int reading;
     distance_mm *= CALIBRATION_VALUE;
+    double sum = 0;
     while (sum < distance_mm)
     {
         oi_update(sensor_data);
-
-        oi_setWheels(300, 300); //sets the speed of the left and right wheels, respectively
-
+        oi_setWheels(150, 150);
         while (sum < 10)
         { //runs irobot until the sum data is equal to the specified distance
             oi_update(sensor_data);
             sum += sensor_data->distance; //sends a pointer to distance, stores the value in the temp var sum
             uart_sendData(DISTANCE, 10);
         }
-
-        if (sensor_data->bumpLeft)
-        {
-            oi_update(sensor_data);
-            bump(LEFT);
-            break;
-        }
-
-        else if (sensor_data->bumpRight)
-        {
-            oi_update(sensor_data);
-            bump(RIGHT);
-            break;
-        }
-
-        else if (sensor_data->cliffLeft)
-        {
-            oi_update(sensor_data);
-            reading = sensor_data->cliffLeftSignal;
-            hole(reading, FAR_LEFT);
-            break;
-        }
-
-        else if (sensor_data->cliffRight)
-        {
-            oi_update(sensor_data);
-            reading = sensor_data->cliffRightSignal;
-            hole(reading, FAR_RIGHT);
-            break;
-        }
-
-        else if (sensor_data->cliffFrontLeft)
-        {
-            oi_update(sensor_data);
-            reading = sensor_data->cliffFrontLeftSignal;
-            hole(reading, LEFT);
-            break;
-        }
-
-        else if (sensor_data->cliffFrontRight)
-        {
-            oi_update(sensor_data);
-            reading = sensor_data->cliffFrontRightSignal;
-            lcd_printf("%d", reading); //for testing
-            hole(reading, RIGHT);
-            break;
-        }
-
-        else
-        {
-            sum += sensor_data->distance;
-        }
-
+//        if (hazards(sensor_data))
+//        {
+//            break;
+//        }
+//        else
+//        {
+        sum += sensor_data->distance;
+//        }
     }
     oi_setWheels(0, 0);
-
-    return 0;
 }
 
-void bump(int dir)
+void move_backward(oi_t *sensor_data, double distance_mm)
 {
-    uart_sendData(BUMP, dir);
+    double CALIBRATION_VALUE = 1.25;
+    distance_mm *= CALIBRATION_VALUE;
+    double sum = 0;
+    while (sum > -1 * distance_mm)
+    {
+        oi_update(sensor_data);
+        oi_setWheels(-150, -150);
+        while (sum > -10)
+        { //runs irobot until the sum data is equal to the specified distance
+            oi_update(sensor_data);
+            sum += sensor_data->distance; //sends a pointer to distance, stores the value in the temp var sum
+            uart_sendData(DISTANCE, 10); //sensor_data->distance
+        }
+//        if (hazards(sensor_data))
+//        {
+//            break;
+//        }
+//        else
+//        {
+        sum += sensor_data->distance;
+//        }
+    }
+    oi_setWheels(0, 0);
 }
 
-#warning add parameter for the strength of the hole, compare to thresholds in if statements
+void turn_right(oi_t *sensor_data, double degrees)
+{
+    double CALIBRATION_VALUE = 0.7;
+    degrees *= CALIBRATION_VALUE;
+    double sum = 0;
+    oi_setWheels(-150, 150); // sets the speed of the left wheel to move backward and the right wheel to move forward, which turns the robot right
+    //DEVNOTE: This movement logs the sum value negatively, so the mathematical operations are inverted from the turn_left method.
+    while (sum >= -degrees) //turns the irobot right. sum value decriments until it reaches the specified degree value.
+    {
+        oi_update(sensor_data);
+        sum += sensor_data->angle; //sends a pointer to angle, stores the value in the temp var sum
+        uart_sendData(ANGLE, 1);
+    }
+    oi_setWheels(0, 0);
+}
+void turn_left(oi_t *sensor_data, double degrees)
+{
+    degrees *= 0.7;
+    double sum = 0;
+    oi_setWheels(150, -150); //sets the speed of the right wheel to move forward and the left wheel to move backward, which turns the robot left.
+    while (sum < degrees) //turns irobot left. sum value increments until it reaches the specified degree value.
+    {
+        oi_update(sensor_data);
+        sum += sensor_data->angle; //sends a pointer to angle, stores the value in the temp var sum
+        uart_sendData(ANGLE, -1);
+    }
+    oi_setWheels(0, 0); // stops the robot when while loop is finished
+}
+
+void movement(oi_t *sensor_data)
+{
+    while (command_flag != 1)
+    {
+        if (command_flag == 6)
+        {
+            oi_update(sensor_data);
+            move_forward(sensor_data, 10);
+        }
+        if (command_flag == 7)
+        {
+            oi_update(sensor_data);
+            move_backward(sensor_data, 10);
+        }
+        if (command_flag == 8)
+        {
+            turn_left(sensor_data, 1);
+        }
+        if (command_flag == 9)
+        {
+            turn_right(sensor_data, 1);
+        }
+        if (command_flag == 10)
+        {
+            oi_setWheels(0, 0);
+        }
+    }
+}
+
+char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, turn, go forward, turn, and subtract the sum value from the distance_mm value to compensate for distance traveled when doing the turning cycle
+{
+    if (sensor_data->bumpLeft)
+    {
+        oi_update(sensor_data);
+        bump(LEFT);
+        return 1;
+    }
+
+    else if (sensor_data->bumpRight)
+    {
+        oi_update(sensor_data);
+        bump(RIGHT);
+        return 1;
+    }
+
+    else if (sensor_data->cliffLeft)
+    {
+        oi_update(sensor_data);
+        reading = sensor_data->cliffLeftSignal;
+        hole(reading, FAR_LEFT);
+        return 1;
+    }
+
+    else if (sensor_data->cliffFrontLeft)
+    {
+        oi_update(sensor_data);
+        reading = sensor_data->cliffFrontLeftSignal;
+        hole(reading, LEFT);
+        return 1;
+    }
+
+    else if (sensor_data->cliffFrontRight)
+    {
+        oi_update(sensor_data);
+        reading = sensor_data->cliffFrontRightSignal;
+        hole(reading, RIGHT);
+        return 1;
+    }
+
+    else if (sensor_data->cliffRight)
+    {
+        oi_update(sensor_data);
+        reading = sensor_data->cliffRightSignal;
+        hole(reading, FAR_RIGHT);
+        return 1;
+    }
+
+    else
+    {
+        return 0;
+    }
+}
 
 void hole(int reading, int dir)
 {
-    double tape_threshold;//TODO: find threshold for tape
-    double hole_threshold;//TODO: find threshold for hole
+    double tape_threshold; //TODO: find threshold for tape
+    double hole_threshold; //TODO: find threshold for hole
     //detect hole range for boundary
     if (tape_threshold)
     {
         uart_sendHole(BOUNDARY, dir);
-        //TODO: add end_hole if necessary
     }
-    else if (hole_threshold){
+    //detect hole range for pit
+    else if (hole_threshold)
+    {
         uart_sendHole(HOLE, dir);
-        //TODO: add end_hole if necessary
+
     }
+    //TODO: add end_hole if necessary
 }
 

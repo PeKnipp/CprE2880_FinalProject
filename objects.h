@@ -23,13 +23,7 @@ void detect_objects(oi_t *sensor_data, char scanType, double distance_threshold)
 
 void print_objects();
 
-void smallest_object();
-
-void print_string(char input[]);
-
 void calibrate_servo();
-
-void drive_smallest_object();
 
 void change_parameters();
 
