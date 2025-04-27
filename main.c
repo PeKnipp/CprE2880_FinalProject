@@ -53,10 +53,12 @@ int main(void)
 
     while (1)
     {
-        movement(sensor_data);
-        detect_objects(sensor_data, scanType, distance_threshold);
-        print_objects();
-        change_parameters();
+        hazards(sensor_data);
+
+//        movement(sensor_data);
+//        detect_objects(sensor_data, scanType, distance_threshold);
+//        print_objects();
+//        change_parameters();
         if (command_byte == '\e')
         {
             uart_sendStr("\n\rPProgram terminated.\n\n\r");

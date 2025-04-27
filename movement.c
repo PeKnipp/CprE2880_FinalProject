@@ -124,17 +124,21 @@ void movement(oi_t *sensor_data)
 
 char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, turn, go forward, turn, and subtract the sum value from the distance_mm value to compensate for distance traveled when doing the turning cycle
 {
+    int reading;
+    oi_update(sensor_data);
+    timer_waitMillis(1000);
+
     if (sensor_data->bumpLeft)
     {
         oi_update(sensor_data);
-        bump(LEFT);
+//        bump(LEFT);
         return 1;
     }
 
     else if (sensor_data->bumpRight)
     {
         oi_update(sensor_data);
-        bump(RIGHT);
+//        bump(RIGHT);
         return 1;
     }
 
@@ -143,6 +147,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
         oi_update(sensor_data);
         reading = sensor_data->cliffLeftSignal;
         hole(reading, FAR_LEFT);
+        lcd_printf("value: %lf", reading);
         return 1;
     }
 
@@ -151,6 +156,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
         oi_update(sensor_data);
         reading = sensor_data->cliffFrontLeftSignal;
         hole(reading, LEFT);
+        lcd_printf("value: %lf", reading);
         return 1;
     }
 
@@ -159,6 +165,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
         oi_update(sensor_data);
         reading = sensor_data->cliffFrontRightSignal;
         hole(reading, RIGHT);
+        lcd_printf("value: %lf", reading);
         return 1;
     }
 
@@ -167,6 +174,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
         oi_update(sensor_data);
         reading = sensor_data->cliffRightSignal;
         hole(reading, FAR_RIGHT);
+        lcd_printf("value: %lf", reading);
         return 1;
     }
 
