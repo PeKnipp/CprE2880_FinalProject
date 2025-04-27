@@ -124,6 +124,10 @@ void movement(oi_t *sensor_data)
 
 char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, turn, go forward, turn, and subtract the sum value from the distance_mm value to compensate for distance traveled when doing the turning cycle
 {
+    /*TODO: The sensor works but always detects for LEFT first sicne it is thwe first if.
+     * Possible solution: add an if statement that compares between the read values and chooses
+     * the highest values.
+     */
     int reading;
     oi_update(sensor_data);
     timer_waitMillis(1000);
@@ -147,7 +151,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
         oi_update(sensor_data);
         reading = sensor_data->cliffLeftSignal;
         hole(reading, FAR_LEFT);
-        lcd_printf("value: %lf", reading);
+        lcd_printf("LEFT value: %d", reading);
         return 1;
     }
 
@@ -156,7 +160,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
         oi_update(sensor_data);
         reading = sensor_data->cliffFrontLeftSignal;
         hole(reading, LEFT);
-        lcd_printf("value: %lf", reading);
+        lcd_printf("FRT LEFT value: %d", reading);
         return 1;
     }
 
@@ -165,7 +169,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
         oi_update(sensor_data);
         reading = sensor_data->cliffFrontRightSignal;
         hole(reading, RIGHT);
-        lcd_printf("value: %lf", reading);
+        lcd_printf("FRT RIGHT value: %d", reading);
         return 1;
     }
 
@@ -174,7 +178,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
         oi_update(sensor_data);
         reading = sensor_data->cliffRightSignal;
         hole(reading, FAR_RIGHT);
-        lcd_printf("value: %lf", reading);
+        lcd_printf("RIGHT value: %d", reading);
         return 1;
     }
 
