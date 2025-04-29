@@ -31,7 +31,7 @@ int main(void)
         /*----------SERVO----------*/
         //shows the left and right calibration values
         //TODO for each CyBot: assign true_0 and true_180 values in servo.c
-    //    servo_calibrate();
+//        servo_calibrate();
 
         /*----------ADC----------*/
         //TODO for each CyBot: assign coeff and power values in scan.c
@@ -55,8 +55,8 @@ int main(void)
     {
         hazards(sensor_data);
 
-//        movement(sensor_data);
-//        detect_objects(sensor_data, scanType, distance_threshold);
+       movement(sensor_data);
+        detect_objects(sensor_data, scanType, distance_threshold);
 //        print_objects();
 //        change_parameters();
         if (command_byte == '\e')

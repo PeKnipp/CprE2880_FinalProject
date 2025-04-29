@@ -213,7 +213,7 @@ def socket_thread():
                 if cybot_socket.fileno() != -1:  # Check if socket is still open
                     try:
                         # Set a timeout for the socket
-                        cybot_socket.settimeout(0.1)  # 100ms timeout
+                        # cybot_socket.settimeout(0.1)  # 100ms timeout
                         rx_message = cybot.readline()
                         if rx_message:
                             data = rx_message.decode().strip()
@@ -239,9 +239,10 @@ def socket_thread():
                             elif data.startswith('Object'):
                                 try:
                                     parts = data.split()
-                                    object_distance = int(parts[1])
-                                    object_angle = int(parts[2])
-                                    mapper.handle_scan_object(object_distance, object_angle)
+                                    object_angle = float(parts[1])
+                                    object_distance = float(parts[2])
+                                    object_distance = float(parts[3])
+                                    mapper.handle_scan_object(object_distance, object_angle, object_diameter)
                                 except (ValueError, IndexError) as e:
                                     print(f"Error parsing scan data: {e}")
                     except socket.timeout:
@@ -266,18 +267,18 @@ def socket_thread():
                 # Check if a sensor scan command has been sent
                 if (send_message == "M\n") or (send_message == "m\n"):
                         print("Requested Sensor scan from Cybot:\n")
-                        rx_message = bytearray(1) # Initialize a byte array
+                        # rx_message = bytearray(1) # Initialize a byte array
 
-                        # Create or overwrite existing sensor scan data file
-                        file_object = open(full_path + filename,'w')
+                        # # Create or overwrite existing sensor scan data file
+                        # file_object = open(full_path + filename,'w')
 
-                        while (rx_message.decode() != "END\n"):
-                                rx_message = cybot.readline()
-                                file_object.write(rx_message.decode())
-                                print(rx_message.decode())
+                        # while (rx_message.decode() != "END\n"):
+                        #         rx_message = cybot.readline()
+                        #         file_object.write(rx_message.decode())
+                        #         print(rx_message.decode())
 
-                        file_object.close()
-                        valFromFile.plot()
+                        # file_object.close()
+                        # valFromFile.plot()
 
                 # Wait for new command from GUI
                 while gui_send_message == "wait\n": 

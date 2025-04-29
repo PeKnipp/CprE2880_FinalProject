@@ -17,13 +17,13 @@ class CyBotMapper:
         self.angle = 0  # in degrees
         
         # CyBot dimensions (in mm)
-        # 12.5 inches = 317.5 mm diameter
-        self.CyBot_diameter = 317.5  # 12.5 inches = 317.5 mm
+        # 13.25 inches = 336.55 mm diameter
+        self.CyBot_diameter = 336.55  # 13.25 inches = 336.55 mm
         self.CyBot_radius = self.CyBot_diameter / 2  # Radius for circular representation
         
         # Servo and sensor dimensions
         self.servo_offset = 101.6  # 4 inches = 101.6 mm from center
-        self.sensor_extension = 50.8  # 2 inches = 50.8 mm past servo point
+        self.sensor_extension = 38.1  # 1.5 inches = 38.1 mm past servo point
         
         # Initialize map parameters
         self.resolution = 10  # 10mm per cell
@@ -228,7 +228,7 @@ class CyBotMapper:
         # Change window color to blue for hole
         self.change_window_color("blue", 1000)  # Blue for 1 second
         
-    def handle_scan_object(self, distance, angle):
+    def handle_scan_object(self, distance, angle, diameter):
         """
         Handle object data from scan
         distance: Distance to object in mm

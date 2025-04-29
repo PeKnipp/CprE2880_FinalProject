@@ -18,6 +18,7 @@ void move_forward(oi_t *sensor_data, double distance_mm)
     while (sum < distance_mm)
     {
         oi_update(sensor_data);
+        hazards(sensor_data);
         oi_setWheels(150, 150);
         while (sum < 10)
         { //runs irobot until the sum data is equal to the specified distance
@@ -97,10 +98,12 @@ void movement(oi_t *sensor_data)
 {
     while (command_flag != 1)
     {
+        hazards(sensor_data);
         if (command_flag == 6)
         {
             oi_update(sensor_data);
             move_forward(sensor_data, 10);
+            uart_sendData(DISTANCE, sensor_data);
         }
         if (command_flag == 7)
         {
@@ -134,7 +137,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
     int f_lcliff_v = sensor_data->cliffFrontLeftSignal;
     int f_rcliff_v = sensor_data->cliffFrontRightSignal;
     int rcliff_v = sensor_data->cliffRightSignal;
-    timer_waitMillis(200);
+    //timer_waitMillis(200);
     lcd_printf("lcliff_v = %d\n\rf_lcliff_v = %d\n\rf_rcliff_v = %d\n\rrcliff_v = %d", lcliff_v,
                        f_lcliff_v, f_rcliff_v, rcliff_v); //for testing
     //TODO: calibrate based on bot
@@ -144,14 +147,14 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
     if (sensor_data->bumpLeft)
     {
         oi_update(sensor_data);
-//        bump(LEFT);
+        bump(LEFT);
         return 1;
     }
 
     else if (sensor_data->bumpRight)
     {
         oi_update(sensor_data);
-//        bump(RIGHT);
+        bump(RIGHT);
         return 1;
     }
 
@@ -233,17 +236,30 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
     }
 }
 
+void bump(int dir){
+    char data[100] = "";
+    if (dir == LEFT)
+            {
+                sprintf(data, "BUMP LEFT\n\r");
+            }
+    if (dir == RIGHT)
+    {
+        sprintf(data, "BUMP RIGHT\n\r");
+    }
+    uart_sendStr(data);
+}
+
 void hole(int reading, int dir)
 {
     int tape_threshold; //TODO: find threshold for tape
     int hole_threshold; //TODO: find threshold for hole
     //detect hole range for boundary
-    if (tape_threshold)
+    if (reading > tape_threshold)
     {
         uart_sendHole(BOUNDARY, dir);
     }
     //detect hole range for pit
-    else if (hole_threshold)
+    else if (reading < hole_threshold)
     {
         uart_sendHole(HOLE, dir);
 

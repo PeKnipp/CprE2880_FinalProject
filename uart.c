@@ -16,7 +16,7 @@
 
 // These variables are declared as examples for your use in the interrupt handler.
 volatile char command_byte = '\0';
-volatile char command_byte_GO = 'g'; // byte value for special character used as a command
+volatile char command_byte_GO = 'M'; // byte value for special character used as a command
 volatile char command_byte_STOP = 'h';
 volatile char command_byte_QUIT = 'q';
 volatile char command_byte_MANUAL = 'm';
