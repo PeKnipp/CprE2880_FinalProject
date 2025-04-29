@@ -130,7 +130,16 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
      */
     int reading;
     oi_update(sensor_data);
-    timer_waitMillis(1000);
+    int lcliff_v = sensor_data->cliffLeftSignal;
+    int f_lcliff_v = sensor_data->cliffFrontLeftSignal;
+    int f_rcliff_v = sensor_data->cliffFrontRightSignal;
+    int rcliff_v = sensor_data->cliffRightSignal;
+    timer_waitMillis(200);
+    lcd_printf("lcliff_v = %d\n\rf_lcliff_v = %d\n\rf_rcliff_v = %d\n\rrcliff_v = %d", lcliff_v,
+                       f_lcliff_v, f_rcliff_v, rcliff_v); //for testing
+    //TODO: calibrate based on bot
+    int hole_threshold = 100;//bot 7
+    int tape_threshold = 2000;//bot 7
 
     if (sensor_data->bumpLeft)
     {
@@ -146,39 +155,75 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
         return 1;
     }
 
-    else if (sensor_data->cliffLeft)
+    else if (lcliff_v < hole_threshold)
     {
-        oi_update(sensor_data);
-        reading = sensor_data->cliffLeftSignal;
+        //oi_update(sensor_data);
+        reading = lcliff_v;
         hole(reading, FAR_LEFT);
-        lcd_printf("LEFT value: %d", reading);
+        //lcd_printf("LEFT value: %d", reading);
         return 1;
     }
 
-    else if (sensor_data->cliffFrontLeft)
+    else if (lcliff_v > tape_threshold)
     {
-        oi_update(sensor_data);
-        reading = sensor_data->cliffFrontLeftSignal;
+        //oi_update(sensor_data);
+        reading = lcliff_v;
+        hole(reading, FAR_LEFT);
+        //lcd_printf("LEFT value: %d", reading);
+        return 1;
+    }
+
+    else if (f_lcliff_v < hole_threshold)
+    {
+        //oi_update(sensor_data);
+        reading = f_lcliff_v;
         hole(reading, LEFT);
-        lcd_printf("FRT LEFT value: %d", reading);
+        //lcd_printf("FRT LEFT value: %d", reading);
         return 1;
     }
 
-    else if (sensor_data->cliffFrontRight)
+    else if (f_lcliff_v > tape_threshold)
     {
-        oi_update(sensor_data);
-        reading = sensor_data->cliffFrontRightSignal;
+        //oi_update(sensor_data);
+        reading = f_lcliff_v;
+        hole(reading, LEFT);
+        //lcd_printf("FRT LEFT value: %d", reading);
+        return 1;
+    }
+
+    else if (f_rcliff_v < hole_threshold)
+    {
+        //oi_update(sensor_data);
+        reading = f_rcliff_v;
         hole(reading, RIGHT);
-        lcd_printf("FRT RIGHT value: %d", reading);
+        //lcd_printf("FRT RIGHT value: %d", reading);
         return 1;
     }
 
-    else if (sensor_data->cliffRight)
+    else if (f_rcliff_v > tape_threshold)
     {
-        oi_update(sensor_data);
-        reading = sensor_data->cliffRightSignal;
+        //oi_update(sensor_data);
+        reading = f_rcliff_v;
+        hole(reading, RIGHT);
+        //lcd_printf("FRT RIGHT value: %d", reading);
+        return 1;
+    }
+
+    else if (rcliff_v < hole_threshold)
+    {
+        //oi_update(sensor_data);
+        reading = rcliff_v;
         hole(reading, FAR_RIGHT);
-        lcd_printf("RIGHT value: %d", reading);
+        //lcd_printf("RIGHT value: %d", reading);
+        return 1;
+    }
+
+    else if (rcliff_v > tape_threshold)
+    {
+        //oi_update(sensor_data);
+        reading = rcliff_v;
+        hole(reading, FAR_RIGHT);
+        //lcd_printf("RIGHT value: %d", reading);
         return 1;
     }
 
@@ -190,8 +235,8 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
 
 void hole(int reading, int dir)
 {
-    double tape_threshold; //TODO: find threshold for tape
-    double hole_threshold; //TODO: find threshold for hole
+    int tape_threshold; //TODO: find threshold for tape
+    int hole_threshold; //TODO: find threshold for hole
     //detect hole range for boundary
     if (tape_threshold)
     {
