@@ -22,7 +22,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.colors import ListedColormap
 
 import CyBot_Plot_Sensor_Scan_Values_From_File as valFromFile
-from CyBot_mapper import CyBotMapper
+from new_CyBot_mapper import CyBotMapper
 
 ##### START Define Functions  #########
 
@@ -232,13 +232,13 @@ def socket_thread():
                             # Update map regardless of command state
                             if data.startswith('Distance'):
                                 distance = int(data.split()[1])
-                                mapper.update_position(distance)
+                                mapper.update_bot_position(distance)
                             elif data.startswith('Angle'):
                                 angle = int(data.split()[1])
-                                mapper.angle = angle
+                                mapper.update_bot_angle(angle)
                             elif data.startswith('BUMP'):
                                 direction = data.split()[1]
-                                mapper.handle_bump(direction)
+                                mapper.add_bump(direction)
                             elif data.startswith('HOLE'):
                                 _, hole_type, direction = data.split()
                                 mapper.handle_hole(hole_type, direction)
@@ -248,7 +248,7 @@ def socket_thread():
                                     parts = data.split()
                                     object_angle = float(parts[1])
                                     object_distance = float(parts[2])
-                                    object_distance = float(parts[3])
+                                    object_diameter = float(parts[3])
                                     mapper.handle_scan_object(object_distance, object_angle, object_diameter)
                                 except (ValueError, IndexError) as e:
                                     print(f"Error parsing scan data: {e}")
