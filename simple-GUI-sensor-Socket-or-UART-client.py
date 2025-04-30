@@ -30,34 +30,41 @@ from CyBot_mapper import CyBotMapper
 def main():
         global window  # Made global so quit function (send_quit) can access
         window = tk.Tk() # Create a Tk GUI Window
+        window.title("CyBot Control Interface")
+
+        # Create main container frame
+        main_frame = tk.Frame(window)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Create control panel frame on the right
+        control_frame = tk.Frame(main_frame)
+        control_frame.pack(side=tk.RIGHT, fill=tk.Y, padx=10, pady=10)
 
         # Create mapper instance
         global mapper
-        mapper = CyBotMapper(window)
+        mapper = CyBotMapper(window)  # Pass the window instead of the frame
 
         # Last command label  
         global Last_command_Label  # Made global so that Client function (socket_thread) can modify
-        Last_command_Label = tk.Label(text="Last Command Sent: ") # Creat a Label
-        Last_command_Label.pack() # Pack the label into the window for display
+        Last_command_Label = tk.Label(control_frame, text="Last Command Sent: ") # Creat a Label
+        Last_command_Label.pack(pady=5) # Pack the label into the window for display
         
         # Last received command label
         global Last_received_Label  # Made global so that Client function (socket_thread) can modify
-        Last_received_Label = tk.Label(text="Last Command Received: ") # Create a Label
-        Last_received_Label.pack() # Pack the label into the window for display
+        Last_received_Label = tk.Label(control_frame, text="Last Command Received: ") # Create a Label
+        Last_received_Label.pack(pady=5) # Pack the label into the window for display
+
+        # Create button frame
+        button_frame = tk.Frame(control_frame)
+        button_frame.pack(pady=10)
 
         # Quit command Button
-        quit_command_Button = tk.Button(text ="Press to Quit", command = send_quit)
-        quit_command_Button.pack()  # Pack the button into the window for display
+        quit_command_Button = tk.Button(button_frame, text="Press to Quit", command=send_quit)
+        quit_command_Button.pack(pady=5)  # Pack the button into the window for display
 
         # Cybot Scan command Button
-        scan_command_Button = tk.Button(text ="Press to Scan", command = send_scan)
-        scan_command_Button.pack() # Pack the button into the window for display
-
-        # scan_command_Button = tk.Button(text ="Press to Turn", command = send_turn)
-        # scan_command_Button.pack() # Pack the button into the window for display
-
-        # scan_command_Button = tk.Button(text ="Press to Move", command = send_move)
-        # scan_command_Button.pack() # Pack the button into the window for display
+        scan_command_Button = tk.Button(button_frame, text="Press to Scan", command=send_scan)
+        scan_command_Button.pack(pady=5) # Pack the button into the window for display
 
         window.bind("<KeyPress>", key_press)
         window.bind("<KeyRelease>", key_release)
@@ -186,10 +193,10 @@ def socket_thread():
 
         # A little python magic to make it more convient for you to adjust where you want the data file to live
         # Link for more info: https://towardsthecloud.com/get-relative-path-python 
-        absolute_path = os.path.dirname(__file__) # Absoult path to this python script
-        relative_path = "./"   # Path to sensor data file relative to this python script (./ means data file is in the same directory as this python script)
-        full_path = os.path.join(absolute_path, relative_path) # Full path to sensor data file
-        filename = 'GUITESTING_Sensor_Data.txt' # Name of file you want to store sensor data from your sensor scan command
+        # absolute_path = os.path.dirname(__file__) # Absoult path to this python script
+        # relative_path = "./"   # Path to sensor data file relative to this python script (./ means data file is in the same directory as this python script)
+        # full_path = os.path.join(absolute_path, relative_path) # Full path to sensor data file
+        # filename = 'GUITESTING_Sensor_Data.txt' # Name of file you want to store sensor data from your sensor scan command
 
         # TCP Socket BEGIN (See Echo Client example): https://realpython.com/python-sockets/#echo-client-and-server
         HOST = "192.168.1.1"  # The server's hostname or IP address
