@@ -5,6 +5,9 @@ from matplotlib.animation import FuncAnimation
 
 class CyBotMapper:
     def __init__(self, window):
+        # Store window reference
+        self.master = window
+        
         # Initialize bot state
         self.bot_x = 0  # Starting x position (mm)
         self.bot_y = 0  # Starting y position (mm) 
@@ -126,27 +129,26 @@ class CyBotMapper:
         """Add hole based on type (boundary/hole) and direction"""
         # Convert direction to angle offset
         direction_offsets = {
-            "far left": 135,
-            "left": 90,
-            "right": -90,
-            "far right": -135
+            "far left": 90,
+            "left": 45,
+            "right": -45,
+            "far right": -90
         }
         
         angle_offset = direction_offsets.get(direction, 0)
         global_angle = (self.bot_angle + angle_offset) % 360
         
-        # Place hole at a fixed distance (2x bot radius)
-        distance = self.bot_radius * 2
-        x = self.bot_x + distance * np.cos(np.radians(global_angle))
-        y = self.bot_y + distance * np.sin(np.radians(global_angle))
+        # Place hole at bot radius distance
+        x = self.bot_x + self.bot_radius * np.cos(np.radians(global_angle))
+        y = self.bot_y + self.bot_radius * np.sin(np.radians(global_angle))
         
         self.holes.append((x, y, hole_type, direction))
         
         # Different markers for different hole types
         if hole_type == "boundary":
-            self.ax.plot(x, y, 'rx', markersize=10)  # Red X
+            self.ax.plot(x, y, 'bx', markersize=10)  # blue X
         else:  # regular hole
-            self.ax.plot(x, y, 'ro', markersize=10)  # Red circle
+            self.ax.plot(x, y, 'bo', markersize=10)  # blue circle
             
         # Flash window blue
         orig_color = self.master.cget('bg')

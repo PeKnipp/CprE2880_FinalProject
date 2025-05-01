@@ -38,7 +38,7 @@ def main():
 
         # Create control panel frame on the right
         control_frame = tk.Frame(main_frame)
-        control_frame.pack(side=tk.RIGHT, fill=tk.Y, padx=10, pady=10)
+        control_frame.pack(side=tk.TOP, fill=tk.Y, padx=10, pady=10)
 
         # Create mapper instance
         global mapper
