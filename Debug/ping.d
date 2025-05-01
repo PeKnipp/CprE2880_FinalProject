@@ -1,7 +1,7 @@
 # FIXED
 
 ping.obj: ../ping.c
-ping.obj: U:/CprE288Workspace/FinalProject/ping.h
+ping.obj: U:/CprE288Workspace/Final_Project/ping.h
 ping.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdint.h
 ping.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/_ti_config.h
 ping.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/linkage.h
@@ -15,14 +15,14 @@ ping.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/sys/_st
 ping.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdbool.h
 ping.obj: C:/ti/TivaWare_C_Series-2.2.0.295/inc/tm4c123gh6pm.h
 ping.obj: C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/interrupt.h
-ping.obj: U:/CprE288Workspace/FinalProject/Timer.h
+ping.obj: U:/CprE288Workspace/Final_Project/Timer.h
 ping.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/math.h
 ping.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/_defs.h
 ping.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/machine/_limits.h
 
 ../ping.c:
 
-U:/CprE288Workspace/FinalProject/ping.h:
+U:/CprE288Workspace/Final_Project/ping.h:
 
 C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdint.h:
 
@@ -50,7 +50,7 @@ C:/ti/TivaWare_C_Series-2.2.0.295/inc/tm4c123gh6pm.h:
 
 C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/interrupt.h:
 
-U:/CprE288Workspace/FinalProject/Timer.h:
+U:/CprE288Workspace/Final_Project/Timer.h:
 
 C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/math.h:
 

@@ -5,6 +5,7 @@
 "./lcd.obj"
 "./main.obj"
 "./movement.obj"
+"./music.obj"
 "./objects.obj"
 "./open_interface.obj"
 "./ping.obj"

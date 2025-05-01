@@ -31,12 +31,12 @@ void uart_sendData(int dataType, int dataVal)
     char data[100];
     if (dataType == DISTANCE)
     {
-        sprintf(data, "Distance %d\n\r", dataVal);
+        sprintf(data, "DISTANCE %d\n\r", dataVal);
         uart_sendStr(data);
     }
     if (dataType == ANGLE)
     {
-        sprintf(data, "Angle %d\n\r", dataVal);
+        sprintf(data, "ANGLE %d\n\r", dataVal);
         uart_sendStr(data);
     }
     if (dataType == BUMP)
@@ -152,6 +152,6 @@ void uart_sendHole(int holeType, int holeDir)
 
 extern void uart_sendObject(double diameter, double angle, double distance){
     char data[100];
-    sprintf(data, "OBJECT %f %f %f\n\r", angle, distance, diameter);
+    sprintf(data, "OBJECT %f %f %f\n\r", distance, angle, diameter);
     uart_sendStr(data);
 }

@@ -167,7 +167,7 @@ void detect_objects(oi_t *sensor_data, char scanType, double distance_threshold)
 
         for (i = 0; i <= 180; i += degree_increment) //change i+= for the step size of degrees
         {
-            if (command_byte == 'q')
+            if (command_flag == 3)
             {    //stops the scan if stop is updated
                 uart_sendStr("uit\n\r"); //makes a new line in PuTTY for formatting
                 break;

@@ -27,10 +27,10 @@ movement.obj: C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/interrupt.h
 movement.obj: ../lcd.h
 movement.obj: ../movement.h
 movement.obj: ../gui.h
-movement.obj: U:/CprE288Workspace/FinalProject/servo.h
-movement.obj: U:/CprE288Workspace/FinalProject/button.h
-movement.obj: U:/CprE288Workspace/FinalProject/ping.h
-movement.obj: U:/CprE288Workspace/FinalProject/adc.h
+movement.obj: U:/CprE288Workspace/Final_Project/servo.h
+movement.obj: U:/CprE288Workspace/Final_Project/button.h
+movement.obj: U:/CprE288Workspace/Final_Project/ping.h
+movement.obj: U:/CprE288Workspace/Final_Project/adc.h
 movement.obj: ../uart.h
 
 ../movement.c:
@@ -87,13 +87,13 @@ C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/interrupt.h:
 
 ../gui.h:
 
-U:/CprE288Workspace/FinalProject/servo.h:
+U:/CprE288Workspace/Final_Project/servo.h:
 
-U:/CprE288Workspace/FinalProject/button.h:
+U:/CprE288Workspace/Final_Project/button.h:
 
-U:/CprE288Workspace/FinalProject/ping.h:
+U:/CprE288Workspace/Final_Project/ping.h:
 
-U:/CprE288Workspace/FinalProject/adc.h:
+U:/CprE288Workspace/Final_Project/adc.h:
 
 ../uart.h:
 

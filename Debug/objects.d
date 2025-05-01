@@ -28,12 +28,12 @@ objects.obj: ../lcd.h
 objects.obj: ../servo.h
 objects.obj: ../button.h
 objects.obj: ../scan.h
-objects.obj: U:/CprE288Workspace/FinalProject/ping.h
-objects.obj: U:/CprE288Workspace/FinalProject/adc.h
+objects.obj: U:/CprE288Workspace/Final_Project/ping.h
+objects.obj: U:/CprE288Workspace/Final_Project/adc.h
 objects.obj: ../movement.h
 objects.obj: ../uart.h
 objects.obj: ../gui.h
-objects.obj: U:/CprE288Workspace/FinalProject/objects.h
+objects.obj: U:/CprE288Workspace/Final_Project/objects.h
 
 ../objects.c:
 
@@ -91,9 +91,9 @@ C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/interrupt.h:
 
 ../scan.h:
 
-U:/CprE288Workspace/FinalProject/ping.h:
+U:/CprE288Workspace/Final_Project/ping.h:
 
-U:/CprE288Workspace/FinalProject/adc.h:
+U:/CprE288Workspace/Final_Project/adc.h:
 
 ../movement.h:
 
@@ -101,5 +101,5 @@ U:/CprE288Workspace/FinalProject/adc.h:
 
 ../gui.h:
 
-U:/CprE288Workspace/FinalProject/objects.h:
+U:/CprE288Workspace/Final_Project/objects.h:
 

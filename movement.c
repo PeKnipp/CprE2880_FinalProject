@@ -51,7 +51,7 @@ void move_backward(oi_t *sensor_data, double distance_mm)
         { //runs irobot until the sum data is equal to the specified distance
             oi_update(sensor_data);
             sum += sensor_data->distance; //sends a pointer to distance, stores the value in the temp var sum
-            uart_sendData(DISTANCE, 10); //sensor_data->distance
+            uart_sendData(DISTANCE, -10); //sensor_data->distance
         }
 //        if (hazards(sensor_data))
 //        {
@@ -96,33 +96,38 @@ void turn_left(oi_t *sensor_data, double degrees)
 
 void movement(oi_t *sensor_data)
 {
-    while (command_flag != 1)
-    {
+//    while (command_flag != 1 && command_flag != 0)
+//    {
         hazards(sensor_data);
         if (command_flag == 6)
         {
             oi_update(sensor_data);
             move_forward(sensor_data, 10);
-            uart_sendData(DISTANCE, sensor_data);
+            //uart_sendData(DISTANCE, sensor_data->distance);
+            //command_flag = 0;
         }
         if (command_flag == 7)
         {
             oi_update(sensor_data);
             move_backward(sensor_data, 10);
+            //command_flag = 0;
         }
         if (command_flag == 8)
         {
             turn_left(sensor_data, 1);
+            //command_flag = 0;
         }
         if (command_flag == 9)
         {
             turn_right(sensor_data, 1);
+            //command_flag = 0;
         }
         if (command_flag == 10)
         {
             oi_setWheels(0, 0);
+            //command_flag = 0;
         }
-    }
+
 }
 
 char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, turn, go forward, turn, and subtract the sum value from the distance_mm value to compensate for distance traveled when doing the turning cycle

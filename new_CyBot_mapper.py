@@ -62,7 +62,7 @@ class CyBotMapper:
 
     def update_bot_angle(self, angle_change):
         """Update bot angle based on change in angle"""
-        self.bot_angle += angle_change
+        self.bot_angle -= angle_change
         self.bot_angle = self.bot_angle % 360
         
         # Update direction arrow
@@ -81,7 +81,7 @@ class CyBotMapper:
                                    width=self.bot_radius/2, color='red')
         self.ax.add_patch(self.direction_arrow)
 
-    def add_scanned_obstacle(self, distance_mm, scan_angle, diameter_mm):
+    def add_scanned_obstacle(self, distance, scan_angle, diameter):
         """Add obstacle based on distance and angle from bot (all measurements in mm)"""
         # Convert scan angle (0-180) to global angle
         global_angle = (self.bot_angle - 90 + scan_angle) % 360
@@ -91,21 +91,24 @@ class CyBotMapper:
         scanner_y = self.bot_y + 101.6 * np.sin(np.radians(self.bot_angle))
         
         # Calculate obstacle position relative to scanner
-        x = scanner_x + distance_mm * np.cos(np.radians(global_angle))
-        y = scanner_y + distance_mm * np.sin(np.radians(global_angle))
+        x = scanner_x + (distance*10) * np.cos(np.radians(global_angle))
+        y = scanner_y + (distance*10) * np.sin(np.radians(global_angle))
         
         self.obstacles_x.append(x)
         self.obstacles_y.append(y)
         
         # Draw obstacle with specified diameter in green
-        obstacle_circle = Circle((x, y), diameter_mm/2, color='green', fill=True, alpha=0.5)
+        obstacle_circle = Circle((x, y), diameter*5, color='green', fill=True, alpha=0.5)
         self.ax.add_patch(obstacle_circle)
         self.canvas.draw()
 
     def add_bump(self, direction):
         """Add bump (low object) based on direction (left/right)"""
         # Determine bump position relative to bot
-        angle_offset = 45 if direction == "left" else -45
+        if direction == "LEFT":
+            angle_offset = 45 
+        elif direction == "RIGHT":
+            angle_offset = -45
         global_angle = (self.bot_angle + angle_offset) % 360
         
         # Place bump at bot radius distance
@@ -129,10 +132,10 @@ class CyBotMapper:
         """Add hole based on type (boundary/hole) and direction"""
         # Convert direction to angle offset
         direction_offsets = {
-            "far left": 90,
-            "left": 45,
-            "right": -45,
-            "far right": -90
+            "FAR_LEFT": 80,
+            "LEFT": 10,
+            "RIGHT": -10,
+            "FAR_RIGHT": -80
         }
         
         angle_offset = direction_offsets.get(direction, 0)

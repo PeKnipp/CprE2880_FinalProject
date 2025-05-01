@@ -66,6 +66,10 @@ def main():
         scan_command_Button = tk.Button(button_frame, text="Press to Scan", command=send_scan)
         scan_command_Button.pack(pady=5) # Pack the button into the window for display
 
+        # Cybot Stop Scan command Button
+        scan_command_Button = tk.Button(button_frame, text="Stop Scan", command=stop_scan)
+        scan_command_Button.pack(pady=5) # Pack the button into the window for display
+
         window.bind("<KeyPress>", key_press)
         window.bind("<KeyRelease>", key_release)
 
@@ -91,6 +95,11 @@ def send_scan():
         global gui_send_message # Command that the GUI has requested sent to the Cybot
         
         gui_send_message = "M\n"   # Update the message for the Client to send
+
+def stop_scan():
+        global gui_send_message # Command that the GUI has requested sent to the Cybot
+
+        gui_send_message = "q\n"   # Update the message for the Client to send
 
 # def send_turn():
 #         global gui_send_message # Command that the GUI has requested sent to the Cybot
@@ -230,10 +239,10 @@ def socket_thread():
                             Last_received_Label.config(text="Last Command Received: " + data)
                             
                             # Update map regardless of command state
-                            if data.startswith('Distance'):
+                            if data.startswith('DISTANCE'):
                                 distance = int(data.split()[1])
                                 mapper.update_bot_position(distance)
-                            elif data.startswith('Angle'):
+                            elif data.startswith('ANGLE'):
                                 angle = int(data.split()[1])
                                 mapper.update_bot_angle(angle)
                             elif data.startswith('BUMP'):
@@ -241,15 +250,15 @@ def socket_thread():
                                 mapper.add_bump(direction)
                             elif data.startswith('HOLE'):
                                 _, hole_type, direction = data.split()
-                                mapper.handle_hole(hole_type, direction)
+                                mapper.add_hole(hole_type, direction)
                             # Handle scan object data
-                            elif data.startswith('Object'):
+                            elif data.startswith('OBJECT'):
                                 try:
                                     parts = data.split()
-                                    object_angle = float(parts[1])
-                                    object_distance = float(parts[2])
+                                    object_distance = float(parts[1])
+                                    object_angle = float(parts[2])
                                     object_diameter = float(parts[3])
-                                    mapper.handle_scan_object(object_distance, object_angle, object_diameter)
+                                    mapper.add_scanned_obstacle(object_distance, object_angle, object_diameter)
                                 except (ValueError, IndexError) as e:
                                     print(f"Error parsing scan data: {e}")
                     except socket.timeout:
