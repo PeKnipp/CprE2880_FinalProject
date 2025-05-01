@@ -103,7 +103,7 @@ void movement(oi_t *sensor_data)
         if (command_flag == 6)
         {
             if (!hazard_detected == 1)
-            {
+            {   //stops forward movement on hazards. can still turn and back up
                 oi_update(sensor_data);
                 move_forward(sensor_data, 10);
             }

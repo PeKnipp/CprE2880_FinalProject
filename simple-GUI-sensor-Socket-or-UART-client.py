@@ -86,7 +86,7 @@ def send_quit():
         global gui_send_message # Command that the GUI has requested be sent to the Cybot
         global window  # Main GUI window
         
-        gui_send_message = "quit\n"   # Update the message for the Client to send
+        gui_send_message = "\\e\n"   # Update the message for the Client to send
         time.sleep(1)
         window.destroy() # Exit GUI
 
@@ -101,77 +101,6 @@ def stop_scan():
 
         gui_send_message = "q\n"   # Update the message for the Client to send
 
-# def send_turn():
-#         global gui_send_message # Command that the GUI has requested sent to the Cybot
-#         global turnAmount
-#         global turnDirection
-#         gui_send_message = "T\n"   # Update the message for the Client to send
-
-#         turn_window = tk.Toplevel()
-#         turn_window.title("Turn Control")
-
-#         # Function to handle the turn action
-#         def handle_turn(direction):
-#                 degrees = degrees_entry.get()
-#                 if degrees.isdigit() and int(degrees) > 0 and int(degrees) < 91:
-#                         turnAmount = int(degrees)
-#                         turnDirection = direction
-#                         # Here you can add the logic to handle the turn
-                        
-#                         turn_window.destroy()  # Close the top window after action
-#                 else:
-#                         messagebox.showerror("Input Error", "Please enter a valid number of degrees. (Between 0 and 91)")
-
-#         # Create a label for instructions
-#         label = tk.Label(turn_window, text="Enter degrees to turn:")
-#         label.pack(pady=10)
-
-#         # Create an entry for degrees input
-#         degrees_entry = tk.Entry(turn_window)
-#         degrees_entry.pack(pady=10)
-
-#         # Create buttons for left and right turns
-#         left_button = tk.Button(turn_window, text="Turn Left", command=lambda: handle_turn("Left"))
-#         left_button.pack(side=tk.LEFT, padx=20, pady=20)
-
-#         right_button = tk.Button(turn_window, text="Turn Right", command=lambda: handle_turn("Right"))
-#         right_button.pack(side=tk.RIGHT, padx=20, pady=20)
-
-# def send_move():
-#         global gui_send_message # Command that the GUI has requested sent to the Cybot
-#         global moveAmount #in mm
-#         global moveDirection
-#         gui_send_message = "8\n"   # Update the message for the Client to send
-
-#         move_window = tk.Toplevel()
-#         move_window.title("Move Control")
-
-#         # Function to handle the move action
-#         def handle_move(direction):
-#                 centimenters = centimenters_entry.get()
-#                 if centimenters.isdigit() and int(centimenters) > 0:
-#                         moveAmount = int(centimenters) * 10
-#                         moveDirection = direction
-#                         # Here you can add the logic to handle the move
-                        
-#                         move_window.destroy()  # Close the top window after action
-#                 else:
-#                         messagebox.showerror("Input Error", "Please enter a valid number of degrees. (Between 0 and 91)")
-
-#         # Create a label for instructions
-#         label = tk.Label(move_window, text="Enter centimeters to move:")
-#         label.pack(pady=10)
-
-#         # Create an entry for degrees input
-#         centimenters_entry = tk.Entry(move_window)
-#         centimenters_entry.pack(pady=10)
-
-#         # Create buttons for left and right turns
-#         left_button = tk.Button(move_window, text="Move Forward", command=lambda: handle_move("Forward"))
-#         left_button.pack(side=tk.LEFT, padx=20, pady=20)
-
-#         right_button = tk.Button(move_window, text="Move Backward", command=lambda: handle_move("Backward"))
-#         right_button.pack(side=tk.RIGHT, padx=20, pady=20)
 
 def key_press(event):
         global gui_send_message
@@ -225,7 +154,7 @@ def socket_thread():
 
         # Create a separate thread for continuous data reception
         def receive_data_thread():
-            while send_message != 'quit\n':
+            while send_message != '\\e\n':
                 if cybot_socket.fileno() != -1:  # Check if socket is still open
                     try:
                         # Set a timeout for the socket
@@ -275,7 +204,7 @@ def socket_thread():
         receive_thread.start()
 
         # Main command loop
-        while send_message != 'quit\n':
+        while send_message != '\\e\n':
                 # Update the GUI to display command being sent to the CyBot
                 command_display = "Last Command Sent:\t" + send_message
                 Last_command_Label.config(text = command_display)  
@@ -304,7 +233,7 @@ def socket_thread():
 
                 # Send the command
                 cybot.write(send_message.encode())
-                
+      
         print("Client exiting, and closing file descriptor, and/or network socket\n")
         time.sleep(1)
         cybot.close()
