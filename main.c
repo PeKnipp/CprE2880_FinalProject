@@ -55,7 +55,7 @@ int main(void)
     {
         hazards(sensor_data);
 
-       movement(sensor_data);
+        movement(sensor_data);
         detect_objects(sensor_data, scanType, distance_threshold);
 //        print_objects();
 //        change_parameters();

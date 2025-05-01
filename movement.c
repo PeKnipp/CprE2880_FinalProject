@@ -98,11 +98,16 @@ void movement(oi_t *sensor_data)
 {
 //    while (command_flag != 1 && command_flag != 0)
 //    {
-        hazards(sensor_data);
+        char hazard_detected = hazards(sensor_data);
+
         if (command_flag == 6)
         {
-            oi_update(sensor_data);
-            move_forward(sensor_data, 10);
+            if (!hazard_detected == 1)
+            {
+                oi_update(sensor_data);
+                move_forward(sensor_data, 10);
+            }
+
             //uart_sendData(DISTANCE, sensor_data->distance);
             //command_flag = 0;
         }
@@ -149,96 +154,94 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
     int hole_threshold = 100;//bot 7
     int tape_threshold = 2000;//bot 7
 
+    char hazard_detected = 0;
+
     if (sensor_data->bumpLeft)
     {
-        oi_update(sensor_data);
         bump(LEFT);
-        return 1;
-    }
-
-    else if (sensor_data->bumpRight)
-    {
         oi_update(sensor_data);
+        hazard_detected = 1;
+    }
+
+    if (sensor_data->bumpRight)
+    {
         bump(RIGHT);
-        return 1;
+        oi_update(sensor_data);
+        hazard_detected = 1;
     }
 
-    else if (lcliff_v < hole_threshold)
+    if (lcliff_v < hole_threshold)
     {
-        //oi_update(sensor_data);
         reading = lcliff_v;
         hole(reading, FAR_LEFT);
         //lcd_printf("LEFT value: %d", reading);
-        return 1;
+        oi_update(sensor_data);
+        hazard_detected = 1;
     }
 
-    else if (lcliff_v > tape_threshold)
+    if (lcliff_v > tape_threshold)
     {
-        //oi_update(sensor_data);
         reading = lcliff_v;
         hole(reading, FAR_LEFT);
         //lcd_printf("LEFT value: %d", reading);
-        return 1;
+        oi_update(sensor_data);
+        hazard_detected = 1;
     }
 
-    else if (f_lcliff_v < hole_threshold)
+    if (f_lcliff_v < hole_threshold)
     {
-        //oi_update(sensor_data);
         reading = f_lcliff_v;
         hole(reading, LEFT);
         //lcd_printf("FRT LEFT value: %d", reading);
-        return 1;
+        oi_update(sensor_data);
+        hazard_detected = 1;
     }
 
-    else if (f_lcliff_v > tape_threshold)
+    if (f_lcliff_v > tape_threshold)
     {
-        //oi_update(sensor_data);
         reading = f_lcliff_v;
         hole(reading, LEFT);
         //lcd_printf("FRT LEFT value: %d", reading);
-        return 1;
+        oi_update(sensor_data);
+        hazard_detected = 1;
     }
 
-    else if (f_rcliff_v < hole_threshold)
+    if (f_rcliff_v < hole_threshold)
     {
-        //oi_update(sensor_data);
         reading = f_rcliff_v;
         hole(reading, RIGHT);
         //lcd_printf("FRT RIGHT value: %d", reading);
-        return 1;
+        oi_update(sensor_data);
+        hazard_detected = 1;
     }
 
-    else if (f_rcliff_v > tape_threshold)
+    if (f_rcliff_v > tape_threshold)
     {
-        //oi_update(sensor_data);
         reading = f_rcliff_v;
         hole(reading, RIGHT);
         //lcd_printf("FRT RIGHT value: %d", reading);
-        return 1;
+        oi_update(sensor_data);
+        hazard_detected = 1;
     }
 
-    else if (rcliff_v < hole_threshold)
+    if (rcliff_v < hole_threshold)
     {
-        //oi_update(sensor_data);
         reading = rcliff_v;
         hole(reading, FAR_RIGHT);
         //lcd_printf("RIGHT value: %d", reading);
-        return 1;
+        oi_update(sensor_data);
+        hazard_detected = 1;
     }
 
-    else if (rcliff_v > tape_threshold)
+    if (rcliff_v > tape_threshold)
     {
-        //oi_update(sensor_data);
         reading = rcliff_v;
         hole(reading, FAR_RIGHT);
         //lcd_printf("RIGHT value: %d", reading);
-        return 1;
+        oi_update(sensor_data);
+        hazard_detected = 1;
     }
-
-    else
-    {
-        return 0;
-    }
+    return hazard_detected;
 }
 
 void bump(int dir){
@@ -256,8 +259,8 @@ void bump(int dir){
 
 void hole(int reading, int dir)
 {
-    int tape_threshold; //TODO: find threshold for tape
-    int hole_threshold; //TODO: find threshold for hole
+    int hole_threshold = 100;//bot 7
+    int tape_threshold = 2000;//bot 7
     //detect hole range for boundary
     if (reading > tape_threshold)
     {

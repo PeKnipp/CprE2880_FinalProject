@@ -148,7 +148,7 @@ class CyBotMapper:
         self.holes.append((x, y, hole_type, direction))
         
         # Different markers for different hole types
-        if hole_type == "boundary":
+        if hole_type == "BOUNDARY":
             self.ax.plot(x, y, 'bx', markersize=10)  # blue X
         else:  # regular hole
             self.ax.plot(x, y, 'bo', markersize=10)  # blue circle
