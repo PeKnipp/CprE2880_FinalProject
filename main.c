@@ -59,7 +59,7 @@ int main(void)
         detect_objects(sensor_data, scanType, distance_threshold);
 //        print_objects();
 //        change_parameters();
-        if (command_flag == 11)
+        if (command_flag == 2)
         {
             uart_sendStr("\n\rPProgram terminated.\n\n\r");
             break;

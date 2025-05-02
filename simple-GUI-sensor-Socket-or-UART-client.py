@@ -86,7 +86,7 @@ def send_quit():
         global gui_send_message # Command that the GUI has requested be sent to the Cybot
         global window  # Main GUI window
         
-        gui_send_message = "\\e\n"   # Update the message for the Client to send
+        gui_send_message = "h\n"   # Update the message for the Client to send
         time.sleep(1)
         window.destroy() # Exit GUI
 
@@ -154,7 +154,7 @@ def socket_thread():
 
         # Create a separate thread for continuous data reception
         def receive_data_thread():
-            while send_message != '\\e\n':
+            while send_message != 'h\n':
                 if cybot_socket.fileno() != -1:  # Check if socket is still open
                     try:
                         # Set a timeout for the socket
@@ -169,10 +169,10 @@ def socket_thread():
                             
                             # Update map regardless of command state
                             if data.startswith('DISTANCE'):
-                                distance = int(data.split()[1])
+                                distance = float(data.split()[1])
                                 mapper.update_bot_position(distance)
                             elif data.startswith('ANGLE'):
-                                angle = int(data.split()[1])
+                                angle = float(data.split()[1])
                                 mapper.update_bot_angle(angle)
                             elif data.startswith('BUMP'):
                                 direction = data.split()[1]
@@ -204,7 +204,7 @@ def socket_thread():
         receive_thread.start()
 
         # Main command loop
-        while send_message != '\\e\n':
+        while send_message != 'h\n':
                 # Update the GUI to display command being sent to the CyBot
                 command_display = "Last Command Sent:\t" + send_message
                 Last_command_Label.config(text = command_display)  

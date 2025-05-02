@@ -10,6 +10,8 @@
 #include "gui.h"
 #include "uart.h"
 
+volatile char wheels_on = 0;
+
 void move_forward(oi_t *sensor_data, double distance_mm)
 {
     double CALIBRATION_VALUE = 1.25;
@@ -26,12 +28,7 @@ void move_forward(oi_t *sensor_data, double distance_mm)
             sum += sensor_data->distance; //sends a pointer to distance, stores the value in the temp var sum
             uart_sendData(DISTANCE, 10);
         }
-//        if (hazards(sensor_data))
-//        {
-//            break;
-//        }
-//        else
-//        {
+
         sum += sensor_data->distance;
 //        }
     }
@@ -51,7 +48,7 @@ void move_backward(oi_t *sensor_data, double distance_mm)
         { //runs irobot until the sum data is equal to the specified distance
             oi_update(sensor_data);
             sum += sensor_data->distance; //sends a pointer to distance, stores the value in the temp var sum
-            uart_sendData(DISTANCE, -10); //sensor_data->distance
+            uart_sendData(DISTANCE, 10); //sensor_data->distance
         }
 //        if (hazards(sensor_data))
 //        {
@@ -76,7 +73,7 @@ void turn_right(oi_t *sensor_data, double degrees)
     {
         oi_update(sensor_data);
         sum += sensor_data->angle; //sends a pointer to angle, stores the value in the temp var sum
-        uart_sendData(ANGLE, 1);
+        uart_sendData(ANGLE, sensor_data->angle);
     }
     oi_setWheels(0, 0);
 }
@@ -89,7 +86,7 @@ void turn_left(oi_t *sensor_data, double degrees)
     {
         oi_update(sensor_data);
         sum += sensor_data->angle; //sends a pointer to angle, stores the value in the temp var sum
-        uart_sendData(ANGLE, -1);
+        uart_sendData(ANGLE, sensor_data->angle);
     }
     oi_setWheels(0, 0); // stops the robot when while loop is finished
 }
@@ -99,37 +96,69 @@ void movement(oi_t *sensor_data)
 //    while (command_flag != 1 && command_flag != 0)
 //    {
         char hazard_detected = hazards(sensor_data);
-
+        if (hazard_detected == 1){
+            if (wheels_on){
+                oi_setWheels(0, 0);
+                wheels_on = !wheels_on;
+            }
+}
         if (command_flag == 6)
         {
             if (!hazard_detected == 1)
             {   //stops forward movement on hazards. can still turn and back up
-                oi_update(sensor_data);
-                move_forward(sensor_data, 10);
-            }
+                if (!wheels_on){
+                    oi_setWheels(200, 200);
+                    wheels_on = !wheels_on;
 
+                }
+//                oi_update(sensor_data);
+//                move_forward(sensor_data, 10);
+            }
+            uart_sendData(DISTANCE, sensor_data->distance);
             //uart_sendData(DISTANCE, sensor_data->distance);
             //command_flag = 0;
         }
         if (command_flag == 7)
         {
-            oi_update(sensor_data);
-            move_backward(sensor_data, 10);
+            if (!wheels_on){
+                oi_setWheels(-200, -200);
+                wheels_on = !wheels_on;
+
+            }
+            uart_sendData(DISTANCE, sensor_data->distance);
+//            oi_update(sensor_data);
+//            move_backward(sensor_data, 10);
             //command_flag = 0;
         }
         if (command_flag == 8)
         {
-            turn_left(sensor_data, 1);
+            if (!wheels_on){
+               oi_setWheels(150, -150);
+               wheels_on = !wheels_on;
+
+           }
+            uart_sendData(ANGLE, sensor_data->angle);
+            //turn_left(sensor_data, 1);
             //command_flag = 0;
         }
         if (command_flag == 9)
         {
-            turn_right(sensor_data, 1);
+            if (!wheels_on){
+                oi_setWheels(-150, 150);
+                wheels_on = !wheels_on;
+
+            }
+            uart_sendData(ANGLE, sensor_data->angle);
+            //turn_right(sensor_data, 1);
             //command_flag = 0;
         }
         if (command_flag == 10)
         {
-            oi_setWheels(0, 0);
+            if (wheels_on){
+                oi_setWheels(0, 0);
+                wheels_on = !wheels_on;
+            }
+            //oi_setWheels(0, 0);
             //command_flag = 0;
         }
 
@@ -152,7 +181,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
                        f_lcliff_v, f_rcliff_v, rcliff_v); //for testing
     //TODO: calibrate based on bot
     int hole_threshold = 100;//bot 7
-    int tape_threshold = 2000;//bot 7
+    int tape_threshold = 2700;//bot 12
 
     char hazard_detected = 0;
 

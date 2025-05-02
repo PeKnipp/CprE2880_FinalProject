@@ -26,19 +26,23 @@ volatile const int LEFT = 1;
 volatile const int RIGHT = 2;
 volatile const int FAR_RIGHT = 3;
 
-void uart_sendData(int dataType, int dataVal)
+void uart_sendData(int dataType, float dataVal){
+    char data[100];
+        if (dataType == DISTANCE)
+        {
+            sprintf(data, "DISTANCE %f\n\r", dataVal);
+            uart_sendStr(data);
+        }
+        if (dataType == ANGLE)
+        {
+            sprintf(data, "ANGLE %f\n\r", dataVal);
+            uart_sendStr(data);
+        }
+}
+
+void uart_sendBump(int dataType, int dataVal)
 {
     char data[100];
-    if (dataType == DISTANCE)
-    {
-        sprintf(data, "DISTANCE %d\n\r", dataVal);
-        uart_sendStr(data);
-    }
-    if (dataType == ANGLE)
-    {
-        sprintf(data, "ANGLE %d\n\r", dataVal);
-        uart_sendStr(data);
-    }
     if (dataType == BUMP)
     {
         if (dataType == FAR_LEFT)
