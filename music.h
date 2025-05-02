@@ -17,6 +17,6 @@
 
 void make_song();
 
-void play_song();
+void play_song(char songNo);
 
 #endif /* MUSIC_H_ */

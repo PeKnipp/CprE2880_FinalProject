@@ -172,7 +172,6 @@ void detect_objects(oi_t *sensor_data, char scanType, double distance_threshold)
                 uart_sendStr("uit\n\r"); //makes a new line in PuTTY for formatting
                 break;
             }
-            timer_waitMillis(20); //wait for servo
             currentPing = scan(i, SONAR);
             currentIR = scan(i, IR);
 

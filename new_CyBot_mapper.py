@@ -46,6 +46,13 @@ class CyBotMapper:
     def update_bot_position(self, distance_mm):
         """Update bot position based on distance moved in current direction (in mm)"""
         # Calculate new position using current angle and distance
+        # if distance_mm > 0:
+        #     distance_mm *= 4
+
+        # if distance_mm < 0:
+        #     distance_mm *= 1.6
+        distance_mm *=2
+
         dx = distance_mm * np.cos(np.radians(self.bot_angle))
         dy = distance_mm * np.sin(np.radians(self.bot_angle))
         

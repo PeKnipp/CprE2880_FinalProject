@@ -13,6 +13,7 @@
 #include <uart.h>
 #include "button.h"
 #include <objects.h>
+#include "music.h"
 
 int main(void)
 {
@@ -50,7 +51,7 @@ int main(void)
     uart_sendStr("\n\rReady to scan: IR Sensor\n\n\r"); //indicates the bot is ready to scan
     distance_threshold = 710; //reassigning value since the IR sensors values are different
     degree_increment = 1;
-
+    play_song(2);
     while (1)
     {
         hazards(sensor_data);
@@ -61,6 +62,7 @@ int main(void)
 //        change_parameters();
         if (command_flag == 2)
         {
+            play_song(1);
             uart_sendStr("\n\rPProgram terminated.\n\n\r");
             break;
         }

@@ -31,7 +31,7 @@ void make_song()
         oi_loadSong(catsMars_index, catsMars_num, catsMars_note, catsMars_duration);
 }
 
-void play_song(){
+void play_song(char songNo){
     make_song();
-    oi_play_song(1);//selects song to play
+    oi_play_song(songNo);//selects song to play
 }

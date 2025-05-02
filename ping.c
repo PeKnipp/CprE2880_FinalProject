@@ -115,7 +115,7 @@ void TIMER3B_Handler(void){
 }
 
 float ping_getDistance (void){
-    timer_waitMillis(200);
+    timer_waitMillis(50);
     ping_trigger();
     float distance =  (time_diff * 0.00000625 * 343.0)/2.0;
     return distance;

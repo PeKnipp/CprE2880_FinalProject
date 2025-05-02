@@ -26,7 +26,7 @@ volatile const int LEFT = 1;
 volatile const int RIGHT = 2;
 volatile const int FAR_RIGHT = 3;
 
-void uart_sendData(int dataType, float dataVal){
+void uart_sendData(int dataType, double dataVal){
     char data[100];
         if (dataType == DISTANCE)
         {

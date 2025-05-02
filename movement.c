@@ -67,7 +67,7 @@ void turn_right(oi_t *sensor_data, double degrees)
     double CALIBRATION_VALUE = 0.7;
     degrees *= CALIBRATION_VALUE;
     double sum = 0;
-    oi_setWheels(-150, 150); // sets the speed of the left wheel to move backward and the right wheel to move forward, which turns the robot right
+    oi_setWheels(-50, 50); // sets the speed of the left wheel to move backward and the right wheel to move forward, which turns the robot right
     //DEVNOTE: This movement logs the sum value negatively, so the mathematical operations are inverted from the turn_left method.
     while (sum >= -degrees) //turns the irobot right. sum value decriments until it reaches the specified degree value.
     {
@@ -81,7 +81,7 @@ void turn_left(oi_t *sensor_data, double degrees)
 {
     degrees *= 0.7;
     double sum = 0;
-    oi_setWheels(150, -150); //sets the speed of the right wheel to move forward and the left wheel to move backward, which turns the robot left.
+    oi_setWheels(50, -50); //sets the speed of the right wheel to move forward and the left wheel to move backward, which turns the robot left.
     while (sum < degrees) //turns irobot left. sum value increments until it reaches the specified degree value.
     {
         oi_update(sensor_data);
@@ -107,13 +107,14 @@ void movement(oi_t *sensor_data)
             if (!hazard_detected == 1)
             {   //stops forward movement on hazards. can still turn and back up
                 if (!wheels_on){
-                    oi_setWheels(200, 200);
+                    oi_setWheels(100, 100);
                     wheels_on = !wheels_on;
 
                 }
-//                oi_update(sensor_data);
+                oi_update(sensor_data);
 //                move_forward(sensor_data, 10);
             }
+//            oi_update(sensor_data);
             uart_sendData(DISTANCE, sensor_data->distance);
             //uart_sendData(DISTANCE, sensor_data->distance);
             //command_flag = 0;
@@ -121,36 +122,37 @@ void movement(oi_t *sensor_data)
         if (command_flag == 7)
         {
             if (!wheels_on){
-                oi_setWheels(-200, -200);
+                oi_setWheels(-100, -100);
                 wheels_on = !wheels_on;
 
             }
+            oi_update(sensor_data);
             uart_sendData(DISTANCE, sensor_data->distance);
-//            oi_update(sensor_data);
+
 //            move_backward(sensor_data, 10);
             //command_flag = 0;
         }
         if (command_flag == 8)
         {
-            if (!wheels_on){
-               oi_setWheels(150, -150);
-               wheels_on = !wheels_on;
-
-           }
+//            if (!wheels_on){
+//               oi_setWheels(50, -50);
+//               wheels_on = !wheels_on;
+//
+//           }
             uart_sendData(ANGLE, sensor_data->angle);
-            //turn_left(sensor_data, 1);
-            //command_flag = 0;
+            turn_left(sensor_data, 1);
+            command_flag = 0;
         }
         if (command_flag == 9)
         {
-            if (!wheels_on){
-                oi_setWheels(-150, 150);
-                wheels_on = !wheels_on;
-
-            }
-            uart_sendData(ANGLE, sensor_data->angle);
-            //turn_right(sensor_data, 1);
-            //command_flag = 0;
+//            if (!wheels_on){
+//                oi_setWheels(-150, 150);
+//                wheels_on = !wheels_on;
+//
+//            }
+//            uart_sendData(ANGLE, sensor_data->angle);
+            turn_right(sensor_data, 1);
+            command_flag = 0;
         }
         if (command_flag == 10)
         {
@@ -181,7 +183,7 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
                        f_lcliff_v, f_rcliff_v, rcliff_v); //for testing
     //TODO: calibrate based on bot
     int hole_threshold = 100;//bot 7
-    int tape_threshold = 2700;//bot 12
+    int tape_threshold = 3000;//bot 12
 
     char hazard_detected = 0;
 

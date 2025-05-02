@@ -33,6 +33,7 @@ main.obj: ../adc.h
 main.obj: ../scan.h
 main.obj: U:/CprE288Workspace/Final_Project/uart.h
 main.obj: U:/CprE288Workspace/Final_Project/objects.h
+main.obj: ../music.h
 
 ../main.c:
 
@@ -99,4 +100,6 @@ C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdlib.h:
 U:/CprE288Workspace/Final_Project/uart.h:
 
 U:/CprE288Workspace/Final_Project/objects.h:
+
+../music.h:
 

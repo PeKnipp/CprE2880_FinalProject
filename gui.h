@@ -36,7 +36,7 @@ extern volatile const int FAR_RIGHT;
 /**
  * Takes a scan at the given angle of type scanType
  */
-void uart_sendData(int dataType, float dataVal);
+void uart_sendData(int dataType, double dataVal);
 void uart_sendBump(int dataType, int dataVal);
 void uart_sendHole(int holeType, int holeDir);
 void uart_sendObject(double diameter, double angle, double distance);
