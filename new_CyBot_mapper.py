@@ -69,7 +69,12 @@ class CyBotMapper:
 
     def update_bot_angle(self, angle_change):
         """Update bot angle based on change in angle"""
-        self.bot_angle += angle_change * 4
+        if angle_change > 0:
+            self.bot_angle += angle_change * 1.75
+
+        elif angle_change < 0:
+            self.bot_angle += angle_change * 3
+
         self.bot_angle = (self.bot_angle  % 360)
         # Update direction arrow
         self._update_direction_arrow()

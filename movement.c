@@ -140,7 +140,7 @@ void movement(oi_t *sensor_data)
 //
 //           }
             uart_sendData(ANGLE, sensor_data->angle);
-            turn_left(sensor_data, 1);
+            turn_left(sensor_data, 2);
             command_flag = 0;
         }
         if (command_flag == 9)
@@ -151,7 +151,7 @@ void movement(oi_t *sensor_data)
 //
 //            }
 //            uart_sendData(ANGLE, sensor_data->angle);
-            turn_right(sensor_data, 1);
+            turn_right(sensor_data, 2);
             command_flag = 0;
         }
         if (command_flag == 10)
@@ -182,8 +182,8 @@ char hazards(oi_t *sensor_data) //once roomba bumps, gets called, will retreat, 
     lcd_printf("lcliff_v = %d\n\rf_lcliff_v = %d\n\rf_rcliff_v = %d\n\rrcliff_v = %d", lcliff_v,
                        f_lcliff_v, f_rcliff_v, rcliff_v); //for testing
     //TODO: calibrate based on bot
-    int hole_threshold = 100;//bot 7
-    int tape_threshold = 3000;//bot 12
+    int hole_threshold = 200;//bot 7
+    int tape_threshold = 2500;//bot 12
 
     char hazard_detected = 0;
 

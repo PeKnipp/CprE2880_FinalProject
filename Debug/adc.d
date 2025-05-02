@@ -1,7 +1,7 @@
 # FIXED
 
 adc.obj: ../adc.c
-adc.obj: U:/CprE288Workspace/Final_Project/uart.h
+adc.obj: U:/CprE288Workspace/FinalProject/uart.h
 adc.obj: C:/ti/TivaWare_C_Series-2.2.0.295/inc/tm4c123gh6pm.h
 adc.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdint.h
 adc.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/_ti_config.h
@@ -25,7 +25,7 @@ adc.obj: C:/ti/ccs1271/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/xlocale/
 
 ../adc.c:
 
-U:/CprE288Workspace/Final_Project/uart.h:
+U:/CprE288Workspace/FinalProject/uart.h:
 
 C:/ti/TivaWare_C_Series-2.2.0.295/inc/tm4c123gh6pm.h:
 

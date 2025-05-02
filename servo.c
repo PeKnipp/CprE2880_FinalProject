@@ -8,8 +8,8 @@
 #include "servo.h"
 
 /*--------------------------------------CALIBRATION--------------------------------------*/
-volatile uint32_t true_0 = 0x4C869;
-volatile uint32_t true_180 = 0x4582F;
+volatile uint32_t true_0 = 0x4C0F5;
+volatile uint32_t true_180 = 0x4525F;
 volatile uint8_t calibrated = 1; //set to 1 if calibrated values are set
 /*---------------------------------------------------------------------------------------*/
 
