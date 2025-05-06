@@ -8,8 +8,8 @@
 #include "servo.h"
 
 /*--------------------------------------CALIBRATION--------------------------------------*/
-volatile uint32_t true_0 = 0x4C0F5;
-volatile uint32_t true_180 = 0x4525F;
+volatile uint32_t true_0 = 0x4C233;
+volatile uint32_t true_180 = 0x45537;
 volatile uint8_t calibrated = 1; //set to 1 if calibrated values are set
 /*---------------------------------------------------------------------------------------*/
 
@@ -56,8 +56,6 @@ void servo_move(int16_t degrees){
     }
 
     match_value_shifted = match_value_period >> 16;
-//    TIMER1_TBMATCHR_R &= 0x0;
-//    TIMER1_TBPMR_R &= 0x0;
     TIMER1_TBMATCHR_R = match_value_period & 0x0FFFF;
     TIMER1_TBPMR_R = match_value_shifted;
 

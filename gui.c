@@ -68,28 +68,6 @@ void uart_sendBump(int dataType, int dataVal)
 void uart_sendHole(int holeType, int holeDir)
 {
     char data[100];
-    //process which sensor detected the hole
-//    if (holeDir == 0)
-//    {
-//        char direction[] == "LEFT";
-//    }
-//    if (holeDir == 1)
-//    {
-//        char direction[] == "RIGHT";
-//    }
-//    if (holeDir == 2)
-//    {
-//        char direction[] == "FAR_LEFT";
-//    }
-//    if (holeDir == 3)
-//    {
-//        char direction[] == "FAR_RIGHT";
-//    }
-//    else()
-//        {
-//        char direction[] == "OUT OF BOUNDS";
-//    }
-
 //process the hole type and respond accordingly
     if (holeType == HOLE)
     {

@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Arrow
 from matplotlib.animation import FuncAnimation
+import tkinter as tk
 
 class CyBotMapper:
     def __init__(self, window):
@@ -16,8 +17,8 @@ class CyBotMapper:
 
         # Create figure and axis
         self.fig, self.ax = plt.subplots(figsize=(8, 8))
-        self.ax.set_xlim(-2500, 2500)  # Field dimensions in mm (about 100 inches = 2540mm)
-        self.ax.set_ylim(-2500, 2500)
+        self.ax.set_xlim(-5000, 5000)  # Field dimensions in mm (about 100 inches = 2540mm)
+        self.ax.set_ylim(-5000, 5000)
         self.ax.grid(True)
         
         # Initialize empty lists for obstacles
@@ -41,17 +42,11 @@ class CyBotMapper:
         from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
         self.canvas = FigureCanvasTkAgg(self.fig, master=window)
         self.canvas.draw()
-        self.canvas.get_tk_widget().pack(side='left', fill='both', expand=True)
+        self.canvas.get_tk_widget().pack(side=tk.LEFT, fill='both', expand=True)
 
     def update_bot_position(self, distance_mm):
-        """Update bot position based on distance moved in current direction (in mm)"""
         # Calculate new position using current angle and distance
-        # if distance_mm > 0:
-        #     distance_mm *= 4
-
-        # if distance_mm < 0:
-        #     distance_mm *= 1.6
-        distance_mm *=2
+        distance_mm *=2.25
 
         dx = distance_mm * np.cos(np.radians(self.bot_angle))
         dy = distance_mm * np.sin(np.radians(self.bot_angle))
@@ -68,13 +63,7 @@ class CyBotMapper:
         self.canvas.draw()
 
     def update_bot_angle(self, angle_change):
-        """Update bot angle based on change in angle"""
-        if angle_change > 0:
-            self.bot_angle += angle_change * 1.75
-
-        elif angle_change < 0:
-            self.bot_angle += angle_change * 3
-
+        self.bot_angle += angle_change * 11
         self.bot_angle = (self.bot_angle  % 360)
         # Update direction arrow
         self._update_direction_arrow()
@@ -82,7 +71,6 @@ class CyBotMapper:
         self.canvas.draw()
 
     def _update_direction_arrow(self):
-        """Helper function to update direction arrow"""
         # Remove old arrow
         self.direction_arrow.remove()
         # Create new arrow
@@ -93,7 +81,6 @@ class CyBotMapper:
         self.ax.add_patch(self.direction_arrow)
 
     def add_scanned_obstacle(self, distance, scan_angle, diameter):
-        """Add obstacle based on distance and angle from bot (all measurements in mm)"""
         # Convert scan angle (0-180) to global angle
         global_angle = (self.bot_angle - 90 + scan_angle) % 360
         
@@ -114,7 +101,6 @@ class CyBotMapper:
         self.canvas.draw()
 
     def add_bump(self, direction):
-        """Add bump (low object) based on direction (left/right)"""
         # Determine bump position relative to bot
         if direction == "LEFT":
             angle_offset = 45 
@@ -140,7 +126,6 @@ class CyBotMapper:
         self.canvas.draw()
 
     def add_hole(self, hole_type, direction):
-        """Add hole based on type (boundary/hole) and direction"""
         # Convert direction to angle offset
         direction_offsets = {
             "FAR_LEFT": 80,

@@ -140,7 +140,6 @@ void detect_objects(oi_t *sensor_data, char scanType, double distance_threshold)
     if (command_flag == 1)
     {
         command_flag = 0;
-//        uart_sendStr("o\n\r"); //makes a new line in PuTTY for formatting
         int i = 0;
         double current;
         double currentPing;
@@ -152,7 +151,6 @@ void detect_objects(oi_t *sensor_data, char scanType, double distance_threshold)
         double distance;
         int angularWidth = 0;
         char heading[40];
-        char gotcha[40];
 
         int check1 = 0;
         int check2 = 0;
@@ -161,7 +159,6 @@ void detect_objects(oi_t *sensor_data, char scanType, double distance_threshold)
         scan(0, SONAR);
 
         sprintf(heading, "Taking scan\n");
-//    sprintf(heading, "Degrees\tIR Voltage (mV)\n\r");
 
         uart_sendStr(heading);
 
@@ -176,7 +173,6 @@ void detect_objects(oi_t *sensor_data, char scanType, double distance_threshold)
             currentIR = scan(i, IR);
 
             current = currentIR;
-//        sprintf(message, "%d\t\t%i\n\r", i, (int) currentIR);
 
             if (distance_threshold < current)
             {
@@ -198,14 +194,8 @@ void detect_objects(oi_t *sensor_data, char scanType, double distance_threshold)
                     {
                         start_angle = i; //changed from i to i-3 to account for filtering
                         distance = currentPing;
-//                        distance = measurement[i];
                     }
                     end_angle = i;
-                    //print statement
-//                    sprintf(gotcha, "Got an object at %d degrees\n\r", i);
-//                   uart_sendStr(gotcha);
-
-                    //start angle
                     angularWidth++;
                 }
             }
@@ -221,7 +211,6 @@ void detect_objects(oi_t *sensor_data, char scanType, double distance_threshold)
                     objects[object_num].diameter = 2 * M_PI * distance * ((end_angle - start_angle) / 360.00);
                     objects[object_num].distance = distance;
                     uart_sendObject(objects[object_num].diameter, objects[object_num].angle, objects[object_num].distance);
-//                    sprintf(detected_object, "Detected an object, created object %d\n\r", object_num + 1);
                     start_angle = -1;
                     end_angle = -1;
                 }

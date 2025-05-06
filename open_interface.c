@@ -317,7 +317,7 @@ void oi_setLeds(uint8_t play_led, uint8_t advance_led, uint8_t power_color, uint
 /// \brief Set direction and speed of the robot's wheels
 /// \param linear velocity in mm/s values range from -500 -> 500 of right wheel
 /// \param linear velocity in mm/s values range from -500 -> 500 of left wheel
-void oi_setWheels(int16_t right_wheel, int16_t left_wheel)
+void oi_setWheels(int16_t left_wheel, int16_t right_wheel)
 {
     right_wheel = right_wheel * motor_cal_factor_R;
     left_wheel = left_wheel * motor_cal_factor_L;

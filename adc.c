@@ -56,7 +56,7 @@ void adc_calibrate(){
     int i = 0;
     int yVals[10];
     uart_sendStr("\n\rTaking ADC calibration values\n\r\n\r");
-    for(distance = 5; distance <= 50; distance = distance){
+    for(distance = 5; distance <= 50; distance += distance){
         //take sample of analog input
         int sample = adc_read();
         yVals[i] = sample;

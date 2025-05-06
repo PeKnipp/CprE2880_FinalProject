@@ -21,7 +21,6 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.colors import ListedColormap
 
-import CyBot_Plot_Sensor_Scan_Values_From_File as valFromFile
 from new_CyBot_mapper import CyBotMapper
 
 ##### START Define Functions  #########
@@ -31,14 +30,15 @@ def main():
         global window  # Made global so quit function (send_quit) can access
         window = tk.Tk() # Create a Tk GUI Window
         window.title("CyBot Control Interface")
+        window.geometry('1300x1200')
 
         # Create main container frame
         main_frame = tk.Frame(window)
-        main_frame.pack(fill=tk.BOTH, expand=True)
+        main_frame.pack(side=tk.RIGHT, expand=False)
 
         # Create control panel frame on the right
         control_frame = tk.Frame(main_frame)
-        control_frame.pack(side=tk.TOP, fill=tk.Y, padx=10, pady=10)
+        control_frame.pack(side=tk.RIGHT, expand=False)
 
         # Create mapper instance
         global mapper
@@ -51,8 +51,11 @@ def main():
         
         # Last received command label
         global Last_received_Label  # Made global so that Client function (socket_thread) can modify
+        global Last_received
         Last_received_Label = tk.Label(control_frame, text="Last Command Received: ") # Create a Label
+        Last_received = tk.Label(control_frame, text="")
         Last_received_Label.pack(pady=5) # Pack the label into the window for display
+        Last_received.pack(pady=5)
 
         # Create button frame
         button_frame = tk.Frame(control_frame)
@@ -129,13 +132,6 @@ def socket_thread():
         global gui_send_message   # Command that the GUI has requested be sent to the Cybot
         global mapper  # CyBot mapper instance
 
-        # A little python magic to make it more convient for you to adjust where you want the data file to live
-        # Link for more info: https://towardsthecloud.com/get-relative-path-python 
-        # absolute_path = os.path.dirname(__file__) # Absoult path to this python script
-        # relative_path = "./"   # Path to sensor data file relative to this python script (./ means data file is in the same directory as this python script)
-        # full_path = os.path.join(absolute_path, relative_path) # Full path to sensor data file
-        # filename = 'GUITESTING_Sensor_Data.txt' # Name of file you want to store sensor data from your sensor scan command
-
         # TCP Socket BEGIN (See Echo Client example): https://realpython.com/python-sockets/#echo-client-and-server
         HOST = "192.168.1.1"  # The server's hostname or IP address
         PORT = 288        # The port used by the server
@@ -143,7 +139,6 @@ def socket_thread():
         cybot_socket.connect((HOST, PORT))   # Connect to the socket  (Note: Server must first be running)
                       
         cybot = cybot_socket.makefile("rbw", buffering=0)  # makefile creates a file object out of a socket:  https://pythontic.com/modules/socket/makefile
-        # TCP Socket END
 
         # Send initial message
         send_message = "Hello\n"
@@ -165,7 +160,7 @@ def socket_thread():
                             print("Received: " + data)
                             
                             # Update the Last received command label
-                            Last_received_Label.config(text="Last Command Received: " + data)
+                            Last_received.config(text=data)
                             
                             # Update map regardless of command state
                             if data.startswith('DISTANCE'):
@@ -212,18 +207,6 @@ def socket_thread():
                 # Check if a sensor scan command has been sent
                 if (send_message == "M\n") or (send_message == "m\n"):
                         print("Requested Sensor scan from Cybot:\n")
-                        # rx_message = bytearray(1) # Initialize a byte array
-
-                        # # Create or overwrite existing sensor scan data file
-                        # file_object = open(full_path + filename,'w')
-
-                        # while (rx_message.decode() != "END\n"):
-                        #         rx_message = cybot.readline()
-                        #         file_object.write(rx_message.decode())
-                        #         print(rx_message.decode())
-
-                        # file_object.close()
-                        # valFromFile.plot()
 
                 # Wait for new command from GUI
                 while gui_send_message == "wait\n": 

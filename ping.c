@@ -102,14 +102,11 @@ void TIMER3B_Handler(void){
         TIMER3_ICR_R |= 0x404;
         last_time = current_time;
         current_time = TIMER3_TBR_R;
-        //update_flag = 1;
-
 
         if(current_time > last_time){
             overflow ++;
         }
         time_diff = fabs(last_time - current_time);
-        //update_flag = 0;
     }
 
 }

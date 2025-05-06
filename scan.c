@@ -14,16 +14,6 @@
 #include "driverlib/interrupt.h"
 #include "Timer.h"
 
-/**
- * A replacement for the cyBOT_Scan function from previous labs
- */
-
-//typedef struct
-//{
-//    int ping;
-//    float ir;
-//}scandata;
-
 volatile const int SONAR = 0;
 volatile const int IR = 1;
 
@@ -39,9 +29,7 @@ double scan(int angle, int scanType){
         distance = ping_getDistance(); //getDistance does all calculations internally to find the distance to object
     }
     else if (scanType == IR){ //takes a reading using the IR sensor
-        //distance = pow((num1/adc_read()), num2); //calculations to use the ADC voltage to estimate distance
-        distance = adc_read();
-//                num1 - (num2*log(adc_read()));
+         distance = adc_read();
     }
     return distance; //returns distance estimation from the scan
 }
